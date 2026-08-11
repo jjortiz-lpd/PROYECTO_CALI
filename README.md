@@ -1,4 +1,4 @@
-# PROYECTO_CALI
+# TORNEOJAV
 Este repositorio contiene el desarrollo y la documentación del proyecto
 ## Descripción 
 El proyecto tiene como finalidad diseñar e implementar una solución tecnológica para gestionar información de manera organizada y eficiente.
