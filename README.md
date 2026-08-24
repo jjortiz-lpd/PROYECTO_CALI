@@ -22,7 +22,7 @@ El proyecto tiene como finalidad diseñar e implementar una solución tecnológi
 - Esteban Alejandro Hernandez Rodriguez
 - Juan José Ortiz Barrios
 - Natalia Valencia Murgueitio
-- 
+  
 - ## Tecnologías
 - A definir
 - ## Documentación
