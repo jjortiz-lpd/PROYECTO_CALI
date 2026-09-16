@@ -52,4 +52,3 @@
 - Organización de documentación.
 - Definición del Sprint 1.
 
-**Nota:** completar fecha, asistentes reales, decisiones y tareas después de la reunión; no inventar esos datos.
