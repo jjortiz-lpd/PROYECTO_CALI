@@ -1,30 +1,17 @@
-# TORNEOJAV
-Este repositorio contiene el desarrollo y la documentación del proyecto
-## Descripción 
-El proyecto tiene como finalidad diseñar e implementar una solución tecnológica para gestionar información de manera organizada y eficiente.
-## Objetivos
+# TorneoJAV — Documentación
 
-- Analizar las necesidades del proyecto.
-- Diseñar la arquitectura del sistema.
-- Implementar las funcionalidades principales.
-- Documentar el proceso de desarrollo.
-- Realizar pruebas de funcionamiento.
-- ## Contenido
+TorneoJAV es un gestor de torneos de fútbol amateur para centralizar equipos, jugadores, calendarios, resultados y posiciones.
 
-- Documentación del proyecto.
-- Código fuente.
-- Diagramas.
-- Manual de instalación.
-- Manual de usuario.
-- ## Integrantes
+## Documentación
 
-- Juan Pablo Franco Ruiz
-- Esteban Alejandro Hernandez Rodriguez
-- Juan José Ortiz Barrios
-- Natalia Valencia Murgueitio
-  
-- ## Tecnologías
-- A definir
-- ## Documentación
-
-La documentación completa se encuentra en la Wiki del repositorio.
+- [SRS](SRS.md)
+- [WBS](WBS.md)
+- [Historias de usuario](historias-usuario.md)
+- [Casos de uso](casos-de-uso.md)
+- [Plan de Sprints](plan-sprints.md)
+- [Calendario](calendario.md)
+- [Estimación](estimacion.md)
+- [Organigrama](organigrama.md)
+- [Herramientas](herramientas.md)
+- [Reporte gerencial](reporte-gerencial.md)
+- [Actas](actas.md)
