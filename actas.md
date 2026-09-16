@@ -11,7 +11,7 @@
 ### Asistentes
 - Juan José Ortiz
 - Esteban Hernández
-- Natalia Murgueitio
+- Natalia Valencia
 - Juan Pablo Franco
 
 ### Objetivo
