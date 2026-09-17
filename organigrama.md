@@ -14,7 +14,7 @@ Modelo de datos, persistencia y acceso a base de datos.
 ### Esteban Hernández
 Autenticación, usuarios, equipos y jugadores.
 
-### Natalia Murgueitio
+### Natalia Valencia
 Torneos, formatos y generación del calendario.
 
 ### Juan Pablo Franco
