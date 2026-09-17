@@ -17,5 +17,3 @@ Documentación del proyecto TorneoJAV basada en las 10 Historias de Usuario ofic
 - Herramientas
 - Reporte gerencial
 - Actas de reunión
-
-> Los valores [X] y [Y] de la HU-05 se mantienen como pendientes porque no están definidos en las historias suministradas.
