@@ -94,7 +94,9 @@ TorneoJAV/
 ```
 
 Nota: La estructura anterior es provisional. Los elementos marcados como [PLACEHOLDER] deberán reemplazarse cuando la estructura real del código esté consolidada.
+
 ---
+
 ## Base de Datos
 
 TorneoJAV utiliza PostgreSQL como sistema de gestión de base de datos.
@@ -115,7 +117,9 @@ Tabla de posiciones.
 Estadísticas.
 
 [PLACEHOLDER — Agregar aquí el diagrama entidad-relación cuando esté disponible.]
+
 ---
+
 ## Conexión
 
 El acceso a la base de datos se realizará mediante JDBC, utilizando una capa de acceso a datos basada en DAO.
@@ -185,7 +189,7 @@ Documentación del Proyecto
 ---
 La documentación de TorneoJAV se encuentra organizada en diferentes documentos que cubren las distintas etapas de planificación y análisis del proyecto.
 
-Documento	Propósito
+* Documento:	Propósito
 Lean Canvas	Define el problema, usuarios, propuesta de valor y solución del proyecto.
 WBS	Divide el proyecto en componentes y actividades de trabajo.
 Organigrama	Define responsabilidades dentro del equipo.
