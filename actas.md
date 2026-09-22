@@ -4,9 +4,9 @@
 
 ## Acta #1
 **Fecha:** 14/09/2026  
-**Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Hora:** 08:00 - 9:30  
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Definición inicial del proyecto y alineación del equipo.
@@ -38,8 +38,8 @@
 ## Acta #2
 **Fecha:** 15/09/2026  
 **Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Revisión de avances en la estructuración del proyecto.
@@ -65,15 +65,15 @@
 
 ### Próxima reunión
 **Fecha:** 16/09/2026  
-**Hora:** 09:00
+**Hora:** 08:00
 
 ---
 
 ## Acta #3
 **Fecha:** 16/09/2026  
-**Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Hora:** 08:00 - 09:00  
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Revisión del levantamiento de requisitos del sistema.
@@ -104,9 +104,9 @@
 
 ## Acta #4
 **Fecha:** 17/09/2026  
-**Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Hora:** 09:00 - 10:00  
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Validación de los flujos de usuario mediante `casos-de-uso.md`.
@@ -137,9 +137,9 @@
 
 ## Acta #5
 **Fecha:** 18/09/2026  
-**Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Hora:** 09:00 - 09:40  
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Cierre del marco metodológico y métricas de esfuerzo.
@@ -170,9 +170,9 @@
 
 ## Acta #6
 **Fecha:** 21/09/2026  
-**Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Hora:** 09:00 - 09:20  
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Revisión de la distribución temporal de Sprints y entregables.
@@ -199,15 +199,15 @@
 
 ### Próxima reunión
 **Fecha:** 22/09/2026  
-**Hora:** 09:00
+**Hora:** 10:00AM
 
 ---
 
 ## Acta #7
 **Fecha:** 22/09/2026  
-**Hora:** 09:00 - 10:30  
-**Modalidad:** Virtual (Teams)  
-**Asistentes:** Equipo de Proyecto (Líder de Proyecto, Analista de Requisitos, Desarrollador Lead, Diseñador/QA, Natalia Valencia)
+**Hora:** 10:00 - 10:30  
+**Modalidad:** Google Meet  
+**Asistentes:** Equipo de Proyecto (Natalia Valencia, Juan Pablo Franco, Juan Esteban Ortiz, Esteban Alejandro Hernandez)
 
 ### Temas tratados
 1. Verificación final de entregables de la Primera Entrega.
