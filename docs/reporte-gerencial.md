@@ -7,19 +7,22 @@ TorneoJAV
 Centralizar la gestión de torneos, usuarios, equipos, jugadores, partidos, resultados, posiciones y consultas.
 
 ## Alcance
-La primera entrega se estructura sobre las 10 historias oficiales:
-1. Autenticación y roles.
-2. Gestión de torneos.
-3. Configuración de formatos.
-4. Equipos.
-5. Jugadores.
-6. Aprobación de inscripciones.
-7. Calendario.
-8. Resultados y eventos.
-9. Tabla de posiciones.
-10. Consultas.
+La primera entrega se estructura sobre los 12 archivos de Docs:
+1. Canvas.
+2. WBS o Feature Model.
+3. Organigrama.
+4. Calendario de actividades.
+5. Definición Inicial de Sprints.
+6. Requisitos Historias de Usuario.
+7. Casos de Uso.
+8. Requisitos no Funcionales.
+9. Estimación.
+10. Herramientas.
+11. Reporte gerencial.
+12. Actas de reunión.
 
 ## Pendientes
+- Comenzar el primer sprint.
 - Definir [X] y [Y] de HU-05.
 - Definir reglas concretas de edad.
 - Definir reglas de ordenamiento de posiciones.
