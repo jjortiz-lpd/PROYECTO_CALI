@@ -94,8 +94,8 @@ TorneoJAV/
 ```
 
 Nota: La estructura anterior es provisional. Los elementos marcados como [PLACEHOLDER] deberán reemplazarse cuando la estructura real del código esté consolidada.
-
-Base de Datos
+---
+## Base de Datos
 
 TorneoJAV utiliza PostgreSQL como sistema de gestión de base de datos.
 
@@ -115,15 +115,15 @@ Tabla de posiciones.
 Estadísticas.
 
 [PLACEHOLDER — Agregar aquí el diagrama entidad-relación cuando esté disponible.]
-
-Conexión
+---
+## Conexión
 
 El acceso a la base de datos se realizará mediante JDBC, utilizando una capa de acceso a datos basada en DAO.
 
 [PLACEHOLDER — Agregar instrucciones reales de configuración de PostgreSQL.]
-
-Instalación y Ejecución
-Requisitos
+---
+## Instalación y Ejecución
+### Requisitos
 
 Los requisitos previstos para ejecutar TorneoJAV son:
 
@@ -139,8 +139,8 @@ git clone https://github.com/jjortiz-lpd/PROYECTO_CALI.git
 cd PROYECTO_CALI
 
 Nota: El nombre de la carpeta local puede cambiar dependiendo de la configuración utilizada al clonar el repositorio.
-
-Configuración de la Base de Datos
+---
+## Configuración de la Base de Datos
 
 [PLACEHOLDER]
 
@@ -152,7 +152,8 @@ Configuración de la Base de Datos
 
 [PLACEHOLDER — Agregar comandos SQL y configuración real cuando estén disponibles.]
 
-Ejecución de la Aplicación
+---
+## Ejecución de la Aplicación
 
 [PLACEHOLDER]
 
@@ -160,7 +161,8 @@ Ejecución de la Aplicación
 
 La aplicación deberá iniciar la interfaz gráfica de JavaFX y permitir el acceso de los usuarios según el rol correspondiente.
 
-Ejecución de Pruebas
+---
+## Ejecución de Pruebas
 
 [PLACEHOLDER]
 
@@ -180,6 +182,7 @@ Actualización de posiciones.
 Consulta de información.
 Documentación del Proyecto
 
+---
 La documentación de TorneoJAV se encuentra organizada en diferentes documentos que cubren las distintas etapas de planificación y análisis del proyecto.
 
 Documento	Propósito
@@ -196,21 +199,22 @@ Estimación	Presenta una estimación inicial del esfuerzo de desarrollo.
 Herramientas	Documenta las herramientas utilizadas durante el proyecto.
 Reporte Gerencial	Presenta el estado y avance general del proyecto.
 Actas	Registra las reuniones y decisiones relacionadas con el proyecto.
-
-Contexto Académico
+---
+## Contexto Académico
 Proyecto: TorneoJAV
 Asignatura: Fundamentos de Ingeniería de Software
 Institución: Pontificia Universidad Javeriana
-Periodo: [PLACEHOLDER]
+Periodo: 3
 Docente: Kerwin de Jesús Barros Somerson
-Repositorio
+---
+## Repositorio
 
 El código fuente y la gestión del proyecto se encuentran en GitHub:
 
 Repositorio:
 https://github.com/jjortiz-lpd/PROYECTO_CALI
-
-Contacto
+---
+## Contacto
 
 Equipo de desarrollo de TorneoJAV
 
@@ -241,8 +245,9 @@ Estudiante de Ingeniería de Sistemas
 Pontificia Universidad Javeriana
 
 GitHub: @jpfrancor
+---
 
-Licencia
+## Licencia
 
 Proyecto desarrollado con fines académicos.
 
