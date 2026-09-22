@@ -125,25 +125,29 @@ Estadísticas.
 El acceso a la base de datos se realizará mediante JDBC, utilizando una capa de acceso a datos basada en DAO.
 
 [PLACEHOLDER — Agregar instrucciones reales de configuración de PostgreSQL.]
+
 ---
+
 ## Instalación y Ejecución
 ### Requisitos
 
 Los requisitos previstos para ejecutar TorneoJAV son:
 
-Java 17
-PostgreSQL
-Git
-JavaFX
-[PLACEHOLDER — herramienta de construcción: Maven/Gradle]
-[PLACEHOLDER — versión exacta de PostgreSQL]
-[PLACEHOLDER — otras dependencias necesarias]
-Clonar el repositorio
-git clone https://github.com/jjortiz-lpd/PROYECTO_CALI.git
-cd PROYECTO_CALI
+Java 17  
+PostgreSQL  
+Git  
+JavaFX  
+[PLACEHOLDER — herramienta de construcción: Maven/Gradle]  
+[PLACEHOLDER — versión exacta de PostgreSQL]  
+[PLACEHOLDER — otras dependencias necesarias]  
+Clonar el repositorio  
+git clone https://github.com/jjortiz-lpd/PROYECTO_CALI.git  
+cd PROYECTO_CALI  
 
 Nota: El nombre de la carpeta local puede cambiar dependiendo de la configuración utilizada al clonar el repositorio.
+
 ---
+
 ## Configuración de la Base de Datos
 
 [PLACEHOLDER]
@@ -157,6 +161,7 @@ Nota: El nombre de la carpeta local puede cambiar dependiendo de la configuraci�
 [PLACEHOLDER — Agregar comandos SQL y configuración real cuando estén disponibles.]
 
 ---
+
 ## Ejecución de la Aplicación
 
 [PLACEHOLDER]
