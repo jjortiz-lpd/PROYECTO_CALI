@@ -194,35 +194,41 @@ Documentación del Proyecto
 ---
 La documentación de TorneoJAV se encuentra organizada en diferentes documentos que cubren las distintas etapas de planificación y análisis del proyecto.
 
-* Documento:	Propósito
-Lean Canvas	Define el problema, usuarios, propuesta de valor y solución del proyecto.
-WBS	Divide el proyecto en componentes y actividades de trabajo.
-Organigrama	Define responsabilidades dentro del equipo.
-Calendario	Organiza las actividades a lo largo del proyecto.
-Plan de Sprints	Define la distribución inicial de las historias de usuario.
-Historias de Usuario	Define las necesidades y funcionalidades desde la perspectiva de los usuarios.
-Casos de Uso	Describe las interacciones entre usuarios y sistema.
-Requisitos Funcionales	Especifica las funciones que debe realizar el sistema.
-Requisitos No Funcionales	Define características de calidad y restricciones del sistema.
-Estimación	Presenta una estimación inicial del esfuerzo de desarrollo.
-Herramientas	Documenta las herramientas utilizadas durante el proyecto.
-Reporte Gerencial	Presenta el estado y avance general del proyecto.
-Actas	Registra las reuniones y decisiones relacionadas con el proyecto.
+* Documento: Propósito
+* Lean Canvas: Define el problema, usuarios, propuesta de valor y solución del proyecto.
+* WBS: Divide el proyecto en componentes y actividades de trabajo.
+* Organigrama: Define responsabilidades dentro del equipo.
+* Calendario: Organiza las actividades a lo largo del proyecto.
+* Plan de Sprints: Define la distribución inicial de las historias de usuario.
+* Historias de Usuario: Define las necesidades y funcionalidades desde la perspectiva de los usuarios.
+* Casos de Uso: Describe las interacciones entre usuarios y sistema.
+* Requisitos Funcionales: Especifica las funciones que debe realizar el sistema.
+* Requisitos No Funcionales: Define características de calidad y restricciones del sistema.
+* Estimación: Presenta una estimación inicial del esfuerzo de desarrollo.
+* Herramientas: Documenta las herramientas utilizadas durante el proyecto.
+* Reporte Gerencial: Presenta el estado y avance general del proyecto.
+* Actas: Registra las reuniones y decisiones relacionadas con el proyecto.
+
 ---
+
 ## Contexto Académico
 Proyecto: TorneoJAV
 Asignatura: Fundamentos de Ingeniería de Software
 Institución: Pontificia Universidad Javeriana
 Periodo: 3
 Docente: Kerwin de Jesús Barros Somerson
+
 ---
+
 ## Repositorio
 
 El código fuente y la gestión del proyecto se encuentran en GitHub:
 
 Repositorio:
 https://github.com/jjortiz-lpd/PROYECTO_CALI
+
 ---
+
 ## Contacto
 
 Equipo de desarrollo de TorneoJAV
@@ -254,6 +260,7 @@ Estudiante de Ingeniería de Sistemas
 Pontificia Universidad Javeriana
 
 GitHub: @jpfrancor
+
 ---
 
 ## Licencia
