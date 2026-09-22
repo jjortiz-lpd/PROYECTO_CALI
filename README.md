@@ -1,4 +1,4 @@
-# TorneoJAV ⚽
+# TorneoJAV
 
 **"Centralizando la gestión de torneos para hacer la competencia más organizada, eficiente y accesible."**
 
