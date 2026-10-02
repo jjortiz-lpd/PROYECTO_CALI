@@ -24,9 +24,10 @@ public class FormatoService {
                 throw new FormatoNoDefinidoException ( "Tiene que seleccionar un formato");
             }
 
-            Torneo torneo = repo.buscarPorId(torneoID).orElseThrow(() -> new DatosInvalidosException("No existe un torneo con id " + torneoID));
+            Torneo torneo = torneoRepositorio.buscarPorId(torneoID).orElseThrow(() -> new DatosInvalidosException("No existe un torneo con id " + torneoID));
             torneo.setFormato(formato);
-            return repo.guardar(torneo);
+            return torneoRepositorio.guardar(torneo);
+            
 
 
     }
