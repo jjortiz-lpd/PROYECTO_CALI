@@ -1,23 +1,23 @@
 # Organigrama y responsabilidades
 
-## Equipo de desarrollo
-- Juan José Ortiz
-- Esteban Hernández
-- Natalia Murgueitio
-- Juan Pablo Franco
+## Equipo de desarrollo y roles
+- **Juan José Ortiz** — Configuration Manager
+- **Esteban Hernández** — DevOps Engineer
+- **Natalia Valencia** — Product Owner + QA Lead
+- **Juan Pablo Franco** — Scrum Master + Sprint Planner
 
-## Distribución inicial
+## Distribución técnica inicial
 
-### Juan José Ortiz
+### Juan José Ortiz (Configuration Manager)
 Modelo de datos, persistencia y acceso a base de datos.
 
-### Esteban Hernández
+### Esteban Hernández (DevOps Engineer)
 Autenticación, usuarios, equipos y jugadores.
 
-### Natalia Valencia
+### Natalia Valencia (Product Owner + QA Lead)
 Torneos, formatos y generación del calendario.
 
-### Juan Pablo Franco
+### Juan Pablo Franco (Scrum Master + Sprint Planner)
 Resultados, posiciones, estadísticas e interfaz asociada.
 
-> Esta distribución corresponde a responsabilidades de trabajo y no modifica los roles funcionales del sistema.
+> Esta distribución corresponde a responsabilidades de trabajo del equipo y no modifica los roles funcionales dentro del sistema (Administrador, Capitán y Árbitro).
