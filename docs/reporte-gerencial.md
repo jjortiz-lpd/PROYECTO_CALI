@@ -47,3 +47,25 @@ El repositorio cuenta con la totalidad de los artefactos de planificación, requ
 Se resolvieron la totalidad de las definiciones funcionales que se encontraban abiertas al inicio del proyecto:
 - **Límites de plantilla (`HU-05`):** Mínimo de **5 jugadores** (`[Y] = 5`) y máximo de **15 jugadores** (`[X] = 15`) por equipo.
 - **Rango de edad (`HU-05`):** Jugadores entre **16 y 45 años cumplidos**, validados mediante su fecha de nacimiento.
+- **Criterios de ordenamiento y desempate (`HU-09`):** Actualización automática al cerrar el acta arbitral ordenando por: **1.º Mayor puntaje (`PTS`) → 2.º Mayor diferencia de goles (`DG`) → 3.º Mayor cantidad de goles a favor (`GF`)**.
+- **Alcance de estadísticas (`HU-10`):** (1) Resumen de partidos jugados/programados, total de goles y promedio de goles por partido, (2) Equipo más goleador (mayor `GF`), (3) Valla menos vencida (menor `GC`) y (4) Balance disciplinario de tarjetas amarillas y rojas.
+
+## 6. Estado de Avance por Sprint y Métricas del Backlog
+El esfuerzo total del proyecto es de **55 Story Points (SP)** distribuidos en **10 Historias de Usuario** (media de **5.50 SP**, mediana de **5.00 SP**, desviación estándar de **1.90 SP**, mínimo de **3 SP** y máximo de **8 SP`):
+
+| Sprint / Milestone | Fecha Límite | Historias | Esfuerzo (SP) | Avance de Issues | SP Completados | Estado Actual |
+|---|---|---|---:|---|---|---|
+| **Sprint 1 — Acceso y Configuración** | 12/10/2026 | `HU-01`, `HU-02`, `HU-03` | 13 SP | 66.7% (2/3 cerradas) | 10 / 13 SP (76.9%) | En cierre (`HU-01` y `HU-02` en `Done` vía PR `#30` y `#31`; `HU-03` en `Ready`) |
+| **Sprint 2 — Participantes** | 26/10/2026 | `HU-04`, `HU-05`, `HU-06` | 16 SP | 0.0% (0/3 cerradas) | 0 / 16 SP (0.0%) | En preparación (`Backlog`) |
+| **Sprint 3 — Competición** | 09/11/2026 | `HU-07`, `HU-08` | 16 SP | 0.0% (0/2 cerradas) | 0 / 16 SP (0.0%) | Planificado (`Backlog`) |
+| **Sprint 4 — Información** | 23/11/2026 | `HU-09`, `HU-10` | 10 SP | 0.0% (0/2 cerradas) | 0 / 10 SP (0.0%) | Planificado (`Backlog`) |
+| **Total Proyecto** | **07/12/2026** | **10 Historias** | **55 SP** | **20.0% (2/10)** | **10 / 55 SP (18.2%)** | **En ejecución** |
+
+## 7. Pendientes Actuales
+- Completar e integrar la **HU-03 (Configuración del formato del torneo)** para cerrar al 100% el Milestone del **Sprint 1**.
+- Sincronizar en el tablero de GitHub Projects los Story Points (`Estimate`), tallas (`Size`) y asignaciones (`Assignees`) conforme a la línea base de `estimacion.md` y `organigrama.md`.
+- Vincular y cerrar los 4 sub-issues del **Taller de Diseño** (`ECB`, `Clases`, `Componentes` y `Despliegue`) mediante sus commits en `docs/diagramas/`.
+- Iniciar la implementación e integración de las historias del **Sprint 2 (`HU-04`, `HU-05`, `HU-06`)** con fecha meta del **26/10/2026**.
+
+## 8. Próximos Pasos
+Cerrar `HU-03` (Sprint 1) → Subir diagramas de arquitectura a `docs/diagramas/` con sus commits asociados → Ejecutar e integrar el Sprint 2 (`HU-04` a `HU-06`) → Validar criterios de aceptación y pruebas de persistencia en PostgreSQL.
