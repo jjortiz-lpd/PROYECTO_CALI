@@ -1,25 +1,23 @@
 # Herramientas
 
-## Gestión
+## Gestión de proyecto
 - GitHub
 - GitHub Issues
-- GitHub Projects
+- GitHub Projects (Tablero Kanban / Sprints)
 
 ## Control de versiones
 - Git
 - GitHub
 
 ## Desarrollo
-- Java
-- JavaFX, si corresponde a la interfaz definida del proyecto
-- JDBC, si corresponde al acceso a datos
+- Java 17
+- JavaFX (Interfaz gráfica de usuario)
+- JDBC / Patrón DAO (Capa de acceso a datos)
 
 ## Base de datos
-- PostgreSQL, según la planificación técnica del proyecto
+- PostgreSQL
 
 ## Documentación
 - Markdown
 - README
-- Wiki / documentación del repositorio
-
-> Las herramientas técnicas deben validarse contra la configuración final del proyecto.
+- Documentación del repositorio (`docs/`)
