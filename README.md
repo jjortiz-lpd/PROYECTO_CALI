@@ -18,14 +18,14 @@ La plataforma busca facilitar la administración del torneo y permitir que la in
 
 ## Equipo del Proyecto
 
-El equipo de **TorneoJAV** se encuentra organizado mediante responsabilidades relacionadas con las diferentes áreas funcionales y técnicas del sistema.
+El equipo de **TorneoJAV** se encuentra organizado mediante roles de ingeniería y responsabilidades relacionadas con las diferentes áreas funcionales y técnicas del sistema.
 
-| **Integrante** | **Responsabilidad principal** | **GitHub** |
-|---|---|---|
-| **Juan José Ortiz** | Persistencia y datos: modelo entidad-relación, DAO/JDBC, conexión con PostgreSQL y scripts de base de datos. | [@jjortiz-lpd](https://github.com/jjortiz-lpd) |
-| **Esteban Hernández** | Autenticación y equipos: login por roles, gestión de usuarios, equipos y jugadores. | @estebanalejandrohh-prog |
-| **Natalia Valencia** | Torneos y calendario: creación de torneos, configuración de formatos y generación automática del calendario. | @Nati393 |
-| **Juan Pablo Franco** | Resultados y GUI: registro de resultados, tabla de posiciones, estadísticas e interfaz gráfica. | @jpfrancor |
+| **Integrante** | **Rol en el Equipo** | **Responsabilidad principal** | **GitHub** |
+|---|---|---|---|
+| **Juan José Ortiz** | Configuration Manager | Persistencia y datos: modelo entidad-relación, DAO/JDBC, conexión con PostgreSQL y scripts de base de datos. | [@jjortiz-lpd](https://github.com/jjortiz-lpd) |
+| **Esteban Hernández** | DevOps Engineer | Autenticación y equipos: login por roles, gestión de usuarios, equipos y jugadores. | [@estebanalejandrohh-prog](https://github.com/estebanalejandrohh-prog) |
+| **Natalia Valencia** | Product Owner + QA Lead | Torneos y calendario: creación de torneos, configuración de formatos y generación automática del calendario. | [@Nati393](https://github.com/Nati393) |
+| **Juan Pablo Franco** | Scrum Master + Sprint Planner | Resultados y GUI: registro de resultados, tabla de posiciones, estadísticas e interfaz gráfica. | [@jpfrancor](https://github.com/jpfrancor) |
 
 ---
 
@@ -73,6 +73,7 @@ TorneoJAV/
 │   ├── WBS.md
 │   ├── organigrama.md
 │   ├── calendario.md
+│   ├── planeacion-agil.md
 │   ├── plan-sprints.md
 │   ├── historias-usuario.md
 │   ├── casos-de-uso.md
@@ -103,18 +104,18 @@ TorneoJAV utiliza PostgreSQL como sistema de gestión de base de datos.
 
 La base de datos deberá almacenar la información relacionada con:
 
-Usuarios.
-Roles.
-Torneos.
-Formatos de torneo.
-Equipos.
-Jugadores.
-Inscripciones.
-Partidos.
-Resultados.
-Eventos de partidos.
-Tabla de posiciones.
-Estadísticas.
+- Usuarios.
+- Roles.
+- Torneos.
+- Formatos de torneo.
+- Equipos.
+- Jugadores.
+- Inscripciones.
+- Partidos.
+- Resultados.
+- Eventos de partidos.
+- Tabla de posiciones.
+- Estadísticas.
 
 [PLACEHOLDER — Agregar aquí el diagrama entidad-relación cuando esté disponible.]
 
@@ -129,20 +130,25 @@ El acceso a la base de datos se realizará mediante JDBC, utilizando una capa de
 ---
 
 ## Instalación y Ejecución
+
 ### Requisitos
 
 Los requisitos previstos para ejecutar TorneoJAV son:
 
-Java 17  
-PostgreSQL  
-Git  
-JavaFX  
-[PLACEHOLDER — herramienta de construcción: Maven/Gradle]  
-[PLACEHOLDER — versión exacta de PostgreSQL]  
-[PLACEHOLDER — otras dependencias necesarias]  
-Clonar el repositorio  
-git clone https://github.com/jjortiz-lpd/PROYECTO_CALI.git  
-cd PROYECTO_CALI  
+- Java 17  
+- PostgreSQL  
+- Git  
+- JavaFX  
+- [PLACEHOLDER — herramienta de construcción: Maven/Gradle]  
+- [PLACEHOLDER — versión exacta de PostgreSQL]  
+- [PLACEHOLDER — otras dependencias necesarias]  
+
+Clonar el repositorio:
+
+```bash
+git clone [https://github.com/jjortiz-lpd/PROYECTO_CALI.git](https://github.com/jjortiz-lpd/PROYECTO_CALI.git)
+cd PROYECTO_CALI
+```
 
 Nota: El nombre de la carpeta local puede cambiar dependiendo de la configuración utilizada al clonar el repositorio.
 
@@ -171,6 +177,7 @@ Nota: El nombre de la carpeta local puede cambiar dependiendo de la configuraci�
 La aplicación deberá iniciar la interfaz gráfica de JavaFX y permitir el acceso de los usuarios según el rol correspondiente.
 
 ---
+
 ## Ejecución de Pruebas
 
 [PLACEHOLDER]
@@ -179,44 +186,47 @@ La aplicación deberá iniciar la interfaz gráfica de JavaFX y permitir el acce
 
 Las pruebas deberán cubrir las principales funcionalidades del sistema, incluyendo:
 
-Autenticación.
-Control de roles.
-Gestión de torneos.
-Gestión de equipos.
-Gestión de jugadores.
-Aprobación de equipos.
-Generación del calendario.
-Registro de resultados.
-Actualización de posiciones.
-Consulta de información.
-Documentación del Proyecto
+- Autenticación.
+- Control de roles.
+- Gestión de torneos.
+- Gestión de equipos.
+- Gestión de jugadores.
+- Aprobación de equipos.
+- Generación del calendario.
+- Registro de resultados.
+- Actualización de posiciones.
+- Consulta de información.
 
 ---
-La documentación de TorneoJAV se encuentra organizada en diferentes documentos que cubren las distintas etapas de planificación y análisis del proyecto.
 
-* Documento: Propósito
-* Lean Canvas: Define el problema, usuarios, propuesta de valor y solución del proyecto.
-* WBS: Divide el proyecto en componentes y actividades de trabajo.
-* Organigrama: Define responsabilidades dentro del equipo.
-* Calendario: Organiza las actividades a lo largo del proyecto.
-* Plan de Sprints: Define la distribución inicial de las historias de usuario.
-* Historias de Usuario: Define las necesidades y funcionalidades desde la perspectiva de los usuarios.
-* Casos de Uso: Describe las interacciones entre usuarios y sistema.
-* Requisitos Funcionales: Especifica las funciones que debe realizar el sistema.
-* Requisitos No Funcionales: Define características de calidad y restricciones del sistema.
-* Estimación: Presenta una estimación inicial del esfuerzo de desarrollo.
-* Herramientas: Documenta las herramientas utilizadas durante el proyecto.
-* Reporte Gerencial: Presenta el estado y avance general del proyecto.
-* Actas: Registra las reuniones y decisiones relacionadas con el proyecto.
+## Documentación del Proyecto
+
+La documentación de TorneoJAV se encuentra organizada en diferentes documentos dentro del directorio `docs/` que cubren las distintas etapas de planificación y análisis del proyecto:
+
+* **Lean Canvas (`canvas.md`):** Define el problema, usuarios, propuesta de valor y solución del proyecto.
+* **WBS (`WBS.md`):** Divide el proyecto en componentes y actividades de trabajo.
+* **Organigrama (`organigrama.md`):** Define los roles y responsabilidades dentro del equipo.
+* **Calendario (`calendario.md`):** Organiza las actividades a lo largo de las semanas del proyecto.
+* **Planeación Ágil (`planeacion-agil.md`):** Establece el marco iterativo, flujo funcional y criterio de terminado.
+* **Plan de Sprints (`plan-sprints.md`):** Define la distribución de las historias de usuario por Sprint.
+* **Historias de Usuario (`historias-usuario.md`):** Define las necesidades, funcionalidades y criterios de aceptación por rol.
+* **Casos de Uso (`casos-de-uso.md`):** Describe las interacciones entre actores y el sistema.
+* **Requisitos Funcionales (`requisitos-funcionales.md`):** Especifica las funciones que debe realizar el sistema (`RF-01` a `RF-33`).
+* **Requisitos No Funcionales (`requisitos-no-funcionales.md`):** Define características de calidad y restricciones del sistema (`RNF-01` a `RNF-06`).
+* **Estimación (`estimacion.md`):** Presenta la estimación del esfuerzo de desarrollo en Story Points.
+* **Herramientas (`herramientas.md`):** Documenta el stack tecnológico y las herramientas de gestión utilizadas.
+* **Reporte Gerencial (`reporte-gerencial.md`):** Presenta el estado y avance general del proyecto.
+* **Actas (`actas.md`):** Registra las reuniones, acuerdos y seguimiento de tareas del equipo.
 
 ---
 
 ## Contexto Académico
-Proyecto: TorneoJAV
-Asignatura: Fundamentos de Ingeniería de Software
-Institución: Pontificia Universidad Javeriana
-Periodo: 3
-Docente: Kerwin de Jesús Barros Somerson
+
+- **Proyecto:** TorneoJAV
+- **Asignatura:** Fundamentos de Ingeniería de Software
+- **Institución:** Pontificia Universidad Javeriana
+- **Periodo:** 3
+- **Docente:** Kerwin de Jesús Barros Somerson
 
 ---
 
@@ -224,46 +234,32 @@ Docente: Kerwin de Jesús Barros Somerson
 
 El código fuente y la gestión del proyecto se encuentran en GitHub:
 
-Repositorio:
-https://github.com/jjortiz-lpd/PROYECTO_CALI
+- **Repositorio:** https://github.com/jjortiz-lpd/PROYECTO_CALI
 
 ---
 
 ## Contacto
 
-Equipo de desarrollo de TorneoJAV
+**Equipo de desarrollo de TorneoJAV:**
 
-Juan José Ortiz
+- **Juan José Ortiz** — Configuration Manager  
+  Estudiante de Ingeniería de Sistemas, Pontificia Universidad Javeriana  
+  GitHub: [@jjortiz-lpd](https://github.com/jjortiz-lpd)
 
-Estudiante de Ingeniería de Sistemas
-Pontificia Universidad Javeriana
+- **Esteban Hernández** — DevOps Engineer  
+  Estudiante de Ingeniería de Sistemas, Pontificia Universidad Javeriana  
+  GitHub: [@estebanalejandrohh-prog](https://github.com/estebanalejandrohh-prog)
 
-GitHub: @jjortiz-lpd
+- **Natalia Valencia** — Product Owner + QA Lead  
+  Estudiante de Ingeniería de Sistemas, Pontificia Universidad Javeriana  
+  GitHub: [@Nati393](https://github.com/Nati393)
 
-Esteban Hernández
-
-Estudiante de Ingeniería de Sistemas
-Pontificia Universidad Javeriana
-
-GitHub: @estebanalejandrohh-prog
-
-Natalia Valencia
-
-Estudiante de Ingeniería de Sistemas
-Pontificia Universidad Javeriana
-
-GitHub: @Nati393
-
-Juan Pablo Franco
-
-Estudiante de Ingeniería de Sistemas
-Pontificia Universidad Javeriana
-
-GitHub: @jpfrancor
+- **Juan Pablo Franco** — Scrum Master + Sprint Planner  
+  Estudiante de Ingeniería de Sistemas, Pontificia Universidad Javeriana  
+  GitHub: [@jpfrancor](https://github.com/jpfrancor)
 
 ---
 
 ## Licencia
 
 Proyecto desarrollado con fines académicos.
-

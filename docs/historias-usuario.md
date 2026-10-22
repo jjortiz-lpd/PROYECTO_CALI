@@ -58,16 +58,14 @@ Estas historias corresponden a los Issues #9 al #18 proporcionados del repositor
 **Como Capitán, quiero administrar la plantilla de jugadores de mi equipo, para mantener actualizada la información de los participantes del torneo.**
 
 ### Criterios de aceptación
-- CA-01: El Capitán puede agregar un jugador a su equipo, siempre que el equipo no supere el máximo de [X] jugadores definido por el reglamento del torneo.
+- CA-01: El Capitán puede agregar un jugador a su equipo, siempre que el equipo no supere el máximo de 15 jugadores definido por el reglamento del torneo.
 - CA-02: El sistema solicita los datos obligatorios del jugador: nombre completo, número de documento, fecha de nacimiento y número de camiseta.
 - CA-03: El sistema valida que no se registre dos veces al mismo jugador (mismo número de documento) en la misma plantilla.
 - CA-04: El Capitán puede editar la información de un jugador de su equipo.
-- CA-05: El Capitán puede eliminar un jugador, siempre que el equipo mantenga el mínimo de [Y] jugadores exigido por las reglas del torneo.
+- CA-05: El Capitán puede eliminar un jugador, siempre que el equipo mantenga el mínimo de 5 jugadores exigido por las reglas del torneo.
 - CA-06: Un Capitán no puede modificar jugadores de otro equipo.
-- CA-07: El sistema valida que la edad del jugador esté dentro del rango permitido por el torneo.
+- CA-07: El sistema valida que la edad del jugador esté dentro del rango permitido por el torneo (entre 16 y 45 años cumplidos).
 - CA-08: Los cambios quedan persistidos de forma permanente en el sistema.
-
-> Pendiente: definir [X], [Y] y las reglas concretas de edad.
 
 ## HU-06 — Aprobación de inscripción de equipos (#14)
 
@@ -116,10 +114,10 @@ Estas historias corresponden a los Issues #9 al #18 proporcionados del repositor
 
 ### Criterios de aceptación
 - CA-01: Cuando un Árbitro cierre un acta, el sistema debe actualizar la tabla de posiciones.
-- CA-02: El sistema debe actualizar como mínimo partidos jugados, ganados, empatados, perdidos y puntos.
-- CA-03: El sistema debe actualizar los goles a favor y en contra.
-- CA-04: El sistema debe calcular la diferencia de goles.
-- CA-05: La tabla debe ordenar los equipos de acuerdo con las reglas definidas para el torneo.
+- CA-02: El sistema debe actualizar como mínimo partidos jugados (PJ), ganados (PG), empatados (PE), perdidos (PP) y puntos (PTS).
+- CA-03: El sistema debe actualizar los goles a favor (GF) y goles en contra (GC).
+- CA-04: El sistema debe calcular la diferencia de goles (DG = GF - GC).
+- CA-05: La tabla debe ordenar los equipos aplicando en orden los siguientes criterios de desempate: 1.º Mayor puntaje (PTS), 2.º Mayor diferencia de goles (DG) y 3.º Mayor cantidad de goles a favor (GF).
 - CA-06: Un resultado registrado no debe modificar la tabla antes de que el acta sea validada/cerrada.
 - CA-07: Los usuarios autorizados deben poder consultar la tabla actualizada.
 - CA-08: La información mostrada debe corresponder a los resultados almacenados.
@@ -133,7 +131,7 @@ Estas historias corresponden a los Issues #9 al #18 proporcionados del repositor
 - CA-02: El sistema debe mostrar los partidos programados.
 - CA-03: El sistema debe mostrar los partidos finalizados y sus resultados.
 - CA-04: El sistema debe mostrar la tabla de posiciones.
-- CA-05: El sistema debe mostrar las estadísticas disponibles del torneo.
+- CA-05: El sistema debe mostrar las estadísticas generales del torneo: (1) resumen de partidos jugados/programados, total de goles y promedio de goles por partido, (2) equipo más goleador (mayor GF), (3) valla menos vencida (menor GC) y (4) balance disciplinario de tarjetas amarillas y rojas registradas.
 - CA-06: La información debe corresponder a los datos almacenados en la base de datos.
 - CA-07: Los usuarios sin permisos no deben acceder a información restringida.
 - CA-08: Las consultas deben realizarse sin modificar la información almacenada.
