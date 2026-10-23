@@ -31,101 +31,173 @@ El equipo de **TorneoJAV** se encuentra organizado mediante roles de ingeniería
 
 ## Arquitectura del Proyecto
 
-La arquitectura detallada del sistema se encuentra en proceso de definición.
+El sistema está organizado en capas:
 
-De acuerdo con la planificación actual, se contempla una separación entre:
+| Capa | Paquete | Responsabilidad |
+|---|---|---|
+| Presentación | `App.java` (consola) y JavaFX (en desarrollo) | Pedir datos al usuario y mostrar resultados |
+| Negocio | `torneojav.servicio` | Reglas de cada historia de usuario y control de acceso por rol |
+| Acceso a datos | `torneojav.repositorio` y `torneojav.persistencia` | Leer y guardar en PostgreSQL mediante JDBC |
+| Datos | PostgreSQL 16 | Almacenamiento persistente (`db/schema.sql`) |
 
-- Interfaz de usuario.
-- Lógica de negocio.
-- Acceso a datos.
-- Persistencia.
-- Base de datos.
-
-**[PLACEHOLDER — Agregar aquí el diagrama de arquitectura cuando esté definido.]**
+Los diagramas de componentes, clases, despliegue y análisis (ECB) están en `docs/diagramas/`.
 
 ---
 
 ## Estructura del Proyecto
 
-La estructura definitiva del código todavía se encuentra en proceso de consolidación. Por esta razón, se utiliza el siguiente esquema como placeholder para documentar la estructura cuando el desarrollo esté completo:
-
 ```text
-TorneoJAV/
-│
+PROYECTO_CALI/
 ├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── [PLACEHOLDER]
-│   │   │
-│   │   └── resources/
-│   │       └── [PLACEHOLDER]
-│   │
-│   └── test/
-│       └── [PLACEHOLDER]
-│
-├── database/
-│   ├── schema.sql
-│   └── [PLACEHOLDER]
-│
-├── docs/
-│   ├── README.md
-│   ├── canvas.md
-│   ├── WBS.md
-│   ├── organigrama.md
-│   ├── calendario.md
-│   ├── planeacion-agil.md
-│   ├── plan-sprints.md
-│   ├── historias-usuario.md
-│   ├── casos-de-uso.md
-│   ├── requisitos-funcionales.md
-│   ├── requisitos-no-funcionales.md
-│   ├── estimacion.md
-│   ├── herramientas.md
-│   ├── reporte-gerencial.md
-│   └── actas.md
-│
-├── pom.xml
-│   └── [PLACEHOLDER — si se utiliza Maven]
-│
-├── README.md
-│   └── Documento principal del proyecto.
-│
+│   ├── App.java                      Punto de entrada: login y menús por rol (consola)
+│   └── torneojav/
+│       ├── modelo/                   Entidades: Torneo, Equipo, Jugador, Partido, EventoPartido,
+│       │                             PosicionTabla, EstadisticasTorneo, Usuario y enums
+│       ├── servicio/                 Reglas de negocio de cada HU
+│       │   ├── calendario/           IGeneradorCalendario y sus dos implementaciones (HU-07)
+│       │   └── posiciones/           ICriterioDesempate y CriterioEstandarTorneo (HU-09)
+│       ├── repositorio/              Interfaces de acceso a datos y sus implementaciones
+│       │                             ...Postgres (JDBC) y ...Memoria (pruebas sin base)
+│       ├── persistencia/             GestorConexionJDBC: lee db.properties y abre conexiones
+│       └── excepcion/                Excepciones del dominio
+├── db/
+│   └── schema.sql                    Crea las tablas y carga los datos de prueba
+├── lib/
+│   └── postgresql-42.7.14.jar        Driver JDBC de PostgreSQL
+├── docs/                             Documentación de ingeniería y diagramas
+├── graficas/                         Lean Canvas
+├── .vscode/                          Configuración para compilar y ejecutar en VS Code
+├── db.properties.example             Plantilla de la configuración de conexión
 └── .gitignore
-    └── Archivos y carpetas que Git no debe versionar.
 ```
 
-Nota: La estructura anterior es provisional. Los elementos marcados como [PLACEHOLDER] deberán reemplazarse cuando la estructura real del código esté consolidada.
+Cada servicio depende de las interfaces del paquete `repositorio` y no de una implementación concreta. `App.java` decide cuál usar: hoy usa las clases `...Postgres`; si se cambian por las `...Memoria`, el programa funciona igual sin base de datos.
 
 ---
 
 ## Base de Datos
 
-TorneoJAV utiliza PostgreSQL como sistema de gestión de base de datos.
+TorneoJAV usa PostgreSQL 16. El esquema completo está en `db/schema.sql` y tiene 7 tablas:
 
-La base de datos deberá almacenar la información relacionada con:
+| Tabla | Contenido | HU |
+|---|---|---|
+| `usuario` | Usuarios del sistema con su rol (ADMINISTRADOR, CAPITAN, ARBITRO) | HU-01 |
+| `torneo` | Nombre, fecha de inicio y formato del torneo | HU-02, HU-03 |
+| `equipo` | Equipos, su capitán, el torneo y el estado de inscripción | HU-04, HU-06 |
+| `jugador` | Plantilla de cada equipo | HU-05 |
+| `partido` | Calendario: equipos, fecha, ronda, estado, marcador y si el acta está cerrada | HU-07, HU-08 |
+| `evento_partido` | Goles, tarjetas y cambios de cada partido | HU-08 |
+| `posicion_tabla` | Tabla de posiciones por torneo; se reescribe al cerrar cada acta | HU-09 |
 
-- Usuarios.
-- Roles.
-- Torneos.
-- Formatos de torneo.
-- Equipos.
-- Jugadores.
-- Inscripciones.
-- Partidos.
-- Resultados.
-- Eventos de partidos.
-- Tabla de posiciones.
-- Estadísticas.
+Las estadísticas de HU-10 no tienen tabla propia: se calculan a partir de `partido`, `evento_partido` y `posicion_tabla`.
 
-[PLACEHOLDER — Agregar aquí el diagrama entidad-relación cuando esté disponible.]
+### Diagrama entidad-relación
+
+```mermaid
+erDiagram
+    USUARIO ||--o{ EQUIPO : "es capitán de"
+    TORNEO ||--o{ EQUIPO : "inscribe"
+    EQUIPO ||--o{ JUGADOR : "tiene"
+    TORNEO ||--o{ PARTIDO : "programa"
+    EQUIPO ||--o{ PARTIDO : "juega de local"
+    EQUIPO ||--o{ PARTIDO : "juega de visitante"
+    PARTIDO ||--o{ EVENTO_PARTIDO : "registra"
+    JUGADOR ||--o{ EVENTO_PARTIDO : "protagoniza"
+    TORNEO ||--o{ POSICION_TABLA : "clasifica"
+    EQUIPO ||--o| POSICION_TABLA : "ocupa"
+
+    USUARIO {
+        int id PK
+        varchar nombre_usuario UK
+        varchar contrasena
+        varchar rol
+    }
+    TORNEO {
+        int id PK
+        varchar nombre
+        date fecha_inicio
+        varchar formato "puede ser NULL"
+    }
+    EQUIPO {
+        int id PK
+        varchar nombre "único por torneo"
+        int capitan_id FK
+        int torneo_id FK
+        varchar estado "PENDIENTE, APROBADO, RECHAZADO"
+    }
+    JUGADOR {
+        int id PK
+        varchar nombre_completo
+        varchar documento "único por equipo"
+        date fecha_nacimiento
+        int numero_camiseta
+        int equipo_id FK
+    }
+    PARTIDO {
+        int id PK
+        int torneo_id FK
+        int local_id FK
+        int visitante_id FK
+        date fecha
+        int ronda
+        varchar estado
+        int goles_local
+        int goles_visitante
+        boolean acta_cerrada
+    }
+    EVENTO_PARTIDO {
+        int id PK
+        int partido_id FK
+        varchar tipo "GOL, TARJETA_AMARILLA, TARJETA_ROJA, CAMBIO"
+        int minuto "0 a 130"
+        int jugador_id FK
+        int equipo_id FK
+    }
+    POSICION_TABLA {
+        int torneo_id PK, FK
+        int equipo_id PK, FK
+        int pj
+        int pg
+        int pe
+        int pp
+        int gf
+        int gc
+        int dg "calculada: gf - gc"
+        int pts
+    }
+```
+
+### Reglas que garantiza la base de datos
+
+Además de las validaciones en Java, el esquema rechaza datos inválidos aunque alguien los intente insertar directamente:
+
+| Regla | Cómo se garantiza |
+|---|---|
+| No hay dos equipos con el mismo nombre en un torneo, sin importar mayúsculas | Índice único sobre `(torneo_id, LOWER(nombre))` |
+| Un jugador no se repite dentro de la misma plantilla | `UNIQUE (equipo_id, documento)` |
+| Un equipo no juega contra sí mismo | `CHECK (local_id <> visitante_id)` |
+| Roles, formatos, estados y tipos de evento solo aceptan valores válidos | `CHECK (... IN (...))` en cada columna |
+| La diferencia de goles siempre coincide con GF y GC | `dg` es una columna generada: `GENERATED ALWAYS AS (gf - gc) STORED` |
+| Los partidos jugados cuadran con ganados, empatados y perdidos | `CHECK (pj = pg + pe + pp)` |
+| La tabla de posiciones nunca queda a medias | Se reescribe dentro de una transacción (`commit` / `rollback`) en `PosicionRepositorioPostgres` |
 
 ---
 
 ## Conexión
 
-El acceso a la base de datos se realizará mediante JDBC, utilizando una capa de acceso a datos basada en DAO.
+El acceso a la base de datos se hace con JDBC, usando una clase repositorio por entidad (`TorneoRepositorioPostgres`, `EquipoRepositorioPostgres`, etc.). Todas las consultas usan `PreparedStatement`, así que los datos que escribe el usuario nunca se pegan dentro del SQL y no hay riesgo de inyección SQL.
 
-[PLACEHOLDER — Agregar instrucciones reales de configuración de PostgreSQL.]
+`GestorConexionJDBC` lee los datos de conexión del archivo `db.properties`, que va en la raíz del proyecto:
+
+```properties
+db.url=jdbc:postgresql://localhost:5432/torneojav
+db.usuario=postgres
+db.contrasena=SU_CLAVE
+```
+
+Este archivo está en el `.gitignore` y no se sube a GitHub, porque cada integrante tiene su propia contraseña. En el repositorio solo está la plantilla `db.properties.example`.
+
+Si las credenciales no son correctas o PostgreSQL está apagado, el programa lo avisa al arrancar y se cierra, en vez de fallar más adelante.
 
 ---
 
@@ -133,69 +205,104 @@ El acceso a la base de datos se realizará mediante JDBC, utilizando una capa de
 
 ### Requisitos
 
-Los requisitos previstos para ejecutar TorneoJAV son:
+- Java 17 o superior
+- PostgreSQL 16 o superior (incluye pgAdmin)
+- Git
+- Visual Studio Code con el Extension Pack for Java
 
-- Java 17  
-- PostgreSQL  
-- Git  
-- JavaFX  
-- [PLACEHOLDER — herramienta de construcción: Maven/Gradle]  
-- [PLACEHOLDER — versión exacta de PostgreSQL]  
-- [PLACEHOLDER — otras dependencias necesarias]  
+El driver de PostgreSQL ya viene en `lib/`, así que no hay que descargar nada más. El proyecto no usa Maven ni Gradle.
 
 Clonar el repositorio:
 
 ```bash
-git clone [https://github.com/jjortiz-lpd/PROYECTO_CALI.git](https://github.com/jjortiz-lpd/PROYECTO_CALI.git)
+git clone https://github.com/jjortiz-lpd/PROYECTO_CALI.git
 cd PROYECTO_CALI
 ```
-
-Nota: El nombre de la carpeta local puede cambiar dependiendo de la configuración utilizada al clonar el repositorio.
 
 ---
 
 ## Configuración de la Base de Datos
 
-[PLACEHOLDER]
+1. Instalar PostgreSQL y anotar la contraseña del usuario `postgres` que se pide durante la instalación.
+2. Crear la base de datos. En pgAdmin: clic derecho en "Databases" > "Create" > "Database...", con el nombre `torneojav`. Por terminal:
+   ```bash
+   psql -U postgres -c "CREATE DATABASE torneojav;"
+   ```
+3. Crear las tablas y cargar los datos de prueba. En pgAdmin: clic derecho en `torneojav` > "Query Tool", abrir `db/schema.sql` y ejecutar con F5. Por terminal:
+   ```bash
+   psql -U postgres -d torneojav -f db/schema.sql
+   ```
+4. Copiar `db.properties.example` como `db.properties` (en la misma carpeta) y poner la contraseña propia en `db.contrasena`.
 
-1. Instalar PostgreSQL.
-2. Crear la base de datos de TorneoJAV.
-3. Ejecutar el script de creación del esquema.
-4. Configurar las credenciales de conexión.
-5. Ejecutar la aplicación.
+`schema.sql` borra las tablas y las vuelve a crear, así que también sirve para reiniciar los datos cuando se quiera empezar de cero. Si cambia el esquema (por ejemplo, al agregar una tabla nueva), hay que volver a ejecutarlo.
 
-[PLACEHOLDER — Agregar comandos SQL y configuración real cuando estén disponibles.]
+### Datos de prueba
+
+| Usuario | Contraseña | Rol |
+|---|---|---|
+| `admin` | `admin123` | Administrador |
+| `capitan` | `cap123` | Capitán de Tigres, Pumas y Halcones |
+| `capitan2` | `cap456` | Capitán de Leones y Cóndores |
+| `arbitro` | `arb123` | Árbitro |
+
+El torneo de prueba es la "Copa Javeriana" (todos contra todos). Tiene 4 equipos aprobados (Tigres, Leones, Cóndores y Halcones) y Pumas pendiente de aprobación. Los partidos no vienen cargados: se crean desde el menú del administrador con "Generar calendario".
+
+| Equipo | Ids de sus jugadores |
+|---|---|
+| Tigres | 1 a 8 |
+| Leones | 9 a 15 |
+| Cóndores | 16 a 20 |
+| Halcones | 21 a 25 |
 
 ---
 
 ## Ejecución de la Aplicación
 
-[PLACEHOLDER]
+En VS Code: abrir la carpeta `PROYECTO_CALI` (la raíz, no `src`) y presionar F5, o en "Run and Debug" elegir la configuración "TorneoJAV".
 
-[COMANDO PARA EJECUTAR TORNEOJAV]
+Por terminal, desde la raíz del proyecto:
 
-La aplicación deberá iniciar la interfaz gráfica de JavaFX y permitir el acceso de los usuarios según el rol correspondiente.
+```bash
+# Windows
+javac -d bin -cp "lib/*" -sourcepath src src/App.java
+java -cp "bin;lib/*" App
+
+# Linux / macOS
+javac -d bin -cp "lib/*" -sourcepath src src/App.java
+java -cp "bin:lib/*" App
+```
+
+La versión actual funciona por consola. Al iniciar pide usuario y contraseña y muestra el menú del rol correspondiente:
+
+| Rol | Puede hacer |
+|---|---|
+| Administrador | Crear, modificar, eliminar y configurar torneos; aprobar o rechazar inscripciones; generar el calendario y las rondas de eliminación directa |
+| Capitán | Registrar y modificar sus equipos; administrar la plantilla (entre 5 y 15 jugadores de 16 a 45 años); ver el estado de inscripción |
+| Árbitro | Registrar goles, tarjetas y cambios; cerrar el acta del partido |
+| Todos | Consultar partidos programados, resultados, tabla de posiciones y estadísticas |
+
+La interfaz gráfica en JavaFX está en desarrollo y usará los mismos servicios.
 
 ---
 
 ## Ejecución de Pruebas
 
-[PLACEHOLDER]
+El proyecto todavía no tiene pruebas automáticas. Mientras tanto, este recorrido verifica las funcionalidades principales con los datos de prueba:
 
-[COMANDO PARA EJECUTAR LAS PRUEBAS]
+| # | Usuario | Acción | Resultado esperado |
+|---|---|---|---|
+| 1 | `admin` / clave errada | Iniciar sesión | Mensaje de credenciales incorrectas (HU-01) |
+| 2 | `admin` | Opción 5: generar calendario | 6 partidos en 3 jornadas, sin Pumas (HU-07) |
+| 3 | `admin` | Opción 5 otra vez | Error: el calendario ya fue generado (HU-07 CA-05) |
+| 4 | `admin` | Opción 11: cambiar formato del torneo 1 | Error: ya hay calendario (HU-03) |
+| 5 | `capitan` | Agregar un jugador de 14 años | Error de edad (HU-05) |
+| 6 | `capitan` | Ver jugadores del equipo 2 (Leones) | Error: no es su equipo (HU-05 CA-06) |
+| 7 | `arbitro` | Registrar 2 goles del jugador 1 en el partido 1 y cerrar el acta | Partido 1 queda 2-0 y la tabla se actualiza (HU-08, HU-09) |
+| 8 | `arbitro` | Registrar un evento en el partido 1 | Error: el acta está cerrada (HU-08 CA-06) |
+| 9 | cualquiera | Consultas > Tabla de posiciones | Tigres primero con 3 puntos (HU-09) |
+| 10 | cualquiera | Consultas > Estadísticas | 1 partido jugado, 2 goles, Tigres más goleador (HU-10) |
 
-Las pruebas deberán cubrir las principales funcionalidades del sistema, incluyendo:
-
-- Autenticación.
-- Control de roles.
-- Gestión de torneos.
-- Gestión de equipos.
-- Gestión de jugadores.
-- Aprobación de equipos.
-- Generación del calendario.
-- Registro de resultados.
-- Actualización de posiciones.
-- Consulta de información.
+Para repetir el recorrido desde cero, volver a ejecutar `db/schema.sql`.
 
 ---
 
