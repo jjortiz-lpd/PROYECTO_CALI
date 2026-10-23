@@ -14,8 +14,8 @@ import torneojav.repositorio.JugadorRepositorio;
 
 public class JugadorService {
 
-    public static final int MAX_JUGADORES = 20;
-    public static final int MIN_JUGADORES = 7;
+    public static final int MAX_JUGADORES = 15;
+    public static final int MIN_JUGADORES = 5;
     public static final int EDAD_MIN = 16;
     public static final int EDAD_MAX = 45;
 

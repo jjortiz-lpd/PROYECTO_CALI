@@ -3,23 +3,24 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 import torneojav.excepcion.CredencialesInvalidasException;
-import torneojav.modelo.Equipo;
+import torneojav.excepcion.PersistenciaException;
 import torneojav.modelo.EstadoInscripcion;
 import torneojav.modelo.EventoPartido;
-import torneojav.modelo.FormatoTorneo;
 import torneojav.modelo.Jugador;
-import torneojav.modelo.Partido;
 import torneojav.modelo.TipoEvento;
 import torneojav.modelo.Torneo;
 import torneojav.modelo.Usuario;
+import torneojav.persistencia.GestorConexionJDBC;
 import torneojav.repositorio.EquipoRepositorio;
-import torneojav.repositorio.EquipoRepositorioMemoria;
-import torneojav.repositorio.EventoRepositorioMemoria;
+import torneojav.repositorio.EquipoRepositorioPostgres;
+import torneojav.repositorio.EventoRepositorioPostgres;
 import torneojav.repositorio.JugadorRepositorio;
-import torneojav.repositorio.JugadorRepositorioMemoria;
+import torneojav.repositorio.JugadorRepositorioPostgres;
 import torneojav.repositorio.PartidoRepositorio;
-import torneojav.repositorio.PartidoRepositorioMemoria;
-import torneojav.repositorio.UsuarioRepositorioMemoria;
+import torneojav.repositorio.PartidoRepositorioPostgres;
+import torneojav.repositorio.TorneoRepositorio;
+import torneojav.repositorio.TorneoRepositorioPostgres;
+import torneojav.repositorio.UsuarioRepositorioPostgres;
 import torneojav.servicio.AutenticacionService;
 import torneojav.servicio.EquipoService;
 import torneojav.servicio.InscripcionService;
@@ -29,8 +30,7 @@ import torneojav.servicio.ResultadoService;
 public class App {
 
     private static final Scanner sc = new Scanner(System.in);
-    private static final Torneo torneo = new Torneo(1, "Copa Javeriana", LocalDate.of(2026, 10, 15),
-            FormatoTorneo.TODOS_CONTRA_TODOS);
+    private static Torneo torneo;
 
     private static AutenticacionService auth;
     private static EquipoService equipoService;
@@ -39,17 +39,32 @@ public class App {
     private static ResultadoService resultadoService;
 
     public static void main(String[] args) {
-        EquipoRepositorio equipos = new EquipoRepositorioMemoria();
-        JugadorRepositorio jugadores = new JugadorRepositorioMemoria();
-        PartidoRepositorio partidos = new PartidoRepositorioMemoria();
+        try {
+            GestorConexionJDBC.probarConexion();
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Revise que PostgreSQL esté encendido y que db.properties tenga los datos correctos.");
+            return;
+        }
 
-        auth = new AutenticacionService(new UsuarioRepositorioMemoria());
+        EquipoRepositorio equipos = new EquipoRepositorioPostgres();
+        JugadorRepositorio jugadores = new JugadorRepositorioPostgres();
+        PartidoRepositorio partidos = new PartidoRepositorioPostgres();
+        TorneoRepositorio torneos = new TorneoRepositorioPostgres();
+
+        auth = new AutenticacionService(new UsuarioRepositorioPostgres());
         equipoService = new EquipoService(equipos, auth);
         jugadorService = new JugadorService(jugadores, equipos, auth);
         inscripcionService = new InscripcionService(equipos, auth);
-        resultadoService = new ResultadoService(partidos, new EventoRepositorioMemoria(), jugadores, auth);
+        resultadoService = new ResultadoService(partidos, new EventoRepositorioPostgres(), jugadores, auth);
 
-        cargarDatosDePrueba(equipos, jugadores, partidos);
+        // Por ahora se trabaja con el torneo 1 (lo crea db/schema.sql).
+        // Cuando esté el menú de HU-02 el administrador podrá elegir el torneo.
+        torneo = torneos.buscarPorId(1).orElse(null);
+        if (torneo == null) {
+            System.out.println("No existe el torneo con id 1. Ejecute db/schema.sql para cargar los datos de prueba.");
+            return;
+        }
 
         System.out.println("=== TorneoJAV | " + torneo.getNombre() + " ===");
         while (true) {
@@ -246,31 +261,6 @@ public class App {
             return null;
         }
         return tipos[opcion - 1];
-    }
-
-    private static void cargarDatosDePrueba(EquipoRepositorio equipos, JugadorRepositorio jugadores,
-                                            PartidoRepositorio partidos) {
-        Equipo tigres = equipos.guardar(new Equipo(0, "Tigres", 2, torneo.getId()));
-        Equipo leones = equipos.guardar(new Equipo(0, "Leones", 4, torneo.getId()));
-        equipos.guardar(new Equipo(0, "Pumas", 2, torneo.getId()));
-        tigres.setEstado(EstadoInscripcion.APROBADO);
-        leones.setEstado(EstadoInscripcion.APROBADO);
-
-        String[] nombresTigres = {"Andrés Gómez", "Juan Pérez", "Carlos Ruiz", "Mateo Díaz",
-                "Felipe Torres", "Santiago Rojas", "David López", "Nicolás Vargas"};
-        for (int i = 0; i < nombresTigres.length; i++) {
-            jugadores.guardar(new Jugador(0, nombresTigres[i], "1000" + i, LocalDate.of(2003, 1 + i, 10),
-                    i + 1, tigres.getId()));
-        }
-
-        String[] nombresLeones = {"Sebastián Mora", "Daniel Castro", "Julián Herrera", "Tomás Ortiz",
-                "Miguel Ramírez", "Esteban Silva", "Pablo Medina"};
-        for (int i = 0; i < nombresLeones.length; i++) {
-            jugadores.guardar(new Jugador(0, nombresLeones[i], "2000" + i, LocalDate.of(2002, 1 + i, 20),
-                    i + 1, leones.getId()));
-        }
-
-        partidos.guardar(new Partido(0, torneo.getId(), tigres, leones, torneo.getFechaInicio(), 1));
     }
 
     private static void imprimir(List<?> lista) {
