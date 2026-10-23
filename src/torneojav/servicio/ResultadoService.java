@@ -23,15 +23,17 @@ public class ResultadoService {
     private final EventoRepositorio eventos;
     private final JugadorRepositorio jugadores;
     private final TorneoRepositorio torneos;
+    private final TablaPosicionesService tablaPosiciones;
     private final AutenticacionService auth;
 
     public ResultadoService(PartidoRepositorio partidos, EventoRepositorio eventos,
                             JugadorRepositorio jugadores, TorneoRepositorio torneos,
-                            AutenticacionService auth) {
+                            TablaPosicionesService tablaPosiciones, AutenticacionService auth) {
         this.partidos = partidos;
         this.eventos = eventos;
         this.jugadores = jugadores;
         this.torneos = torneos;
+        this.tablaPosiciones = tablaPosiciones;
         this.auth = auth;
     }
 
@@ -89,7 +91,11 @@ public class ResultadoService {
         verificarQueHayaGanadorSiEsEliminacion(partido);
         partido.setActaCerrada(true);
         partido.setEstado(EstadoPartido.FINALIZADO);
-        return partidos.guardar(partido);
+        partidos.guardar(partido);
+
+        // HU-09 CA-01: al cerrar el acta se actualiza la tabla de posiciones
+        tablaPosiciones.recalcular(partido.getTorneoId());
+        return partido;
     }
 
     public List<EventoPartido> eventosDelPartido(int partidoId) {

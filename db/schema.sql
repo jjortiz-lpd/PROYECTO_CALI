@@ -6,6 +6,7 @@
 -- de prueba. Úsenlo para reiniciar la base, no en producción.
 -- =====================================================================
 
+DROP TABLE IF EXISTS posicion_tabla;
 DROP TABLE IF EXISTS evento_partido;
 DROP TABLE IF EXISTS partido;
 DROP TABLE IF EXISTS jugador;
@@ -79,6 +80,23 @@ CREATE TABLE evento_partido (
     minuto      INTEGER     NOT NULL CHECK (minuto BETWEEN 0 AND 130),
     jugador_id  INTEGER     NOT NULL REFERENCES jugador(id),
     equipo_id   INTEGER     NOT NULL REFERENCES equipo(id)
+);
+
+-- HU-09: tabla de posiciones. Se reescribe cada vez que un árbitro cierra un acta.
+-- DG no se guarda: PostgreSQL la calcula sola a partir de GF y GC.
+CREATE TABLE posicion_tabla (
+    torneo_id  INTEGER NOT NULL REFERENCES torneo(id) ON DELETE CASCADE,
+    equipo_id  INTEGER NOT NULL REFERENCES equipo(id) ON DELETE CASCADE,
+    pj         INTEGER NOT NULL DEFAULT 0,
+    pg         INTEGER NOT NULL DEFAULT 0,
+    pe         INTEGER NOT NULL DEFAULT 0,
+    pp         INTEGER NOT NULL DEFAULT 0,
+    gf         INTEGER NOT NULL DEFAULT 0,
+    gc         INTEGER NOT NULL DEFAULT 0,
+    dg         INTEGER GENERATED ALWAYS AS (gf - gc) STORED,
+    pts        INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (torneo_id, equipo_id),
+    CHECK (pj = pg + pe + pp)
 );
 
 -- =====================================================================
