@@ -1,0 +1,6 @@
+# Credenciales locales de la base de datos
+db.properties
+
+# Archivos compilados
+bin/
+*.class
