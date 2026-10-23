@@ -38,8 +38,7 @@ public class GestorConexionJDBC {
         try {
             return DriverManager.getConnection(url, usuario, contrasena);
         } catch (SQLException e) {
-            throw new PersistenciaException("No se pudo conectar a la base de datos (" + url + "): "
-                    + e.getMessage(), e);
+            throw new PersistenciaException("No se pudo conectar a la base de datos (" + url + ")", e);
         }
     }
 
