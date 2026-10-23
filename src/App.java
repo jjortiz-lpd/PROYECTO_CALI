@@ -6,6 +6,7 @@ import torneojav.excepcion.CredencialesInvalidasException;
 import torneojav.excepcion.PersistenciaException;
 import torneojav.modelo.EstadoInscripcion;
 import torneojav.modelo.EventoPartido;
+import torneojav.modelo.FormatoTorneo;
 import torneojav.modelo.Jugador;
 import torneojav.modelo.Partido;
 import torneojav.modelo.TipoEvento;
@@ -25,9 +26,11 @@ import torneojav.repositorio.UsuarioRepositorioPostgres;
 import torneojav.servicio.AutenticacionService;
 import torneojav.servicio.CalendarioService;
 import torneojav.servicio.EquipoService;
+import torneojav.servicio.FormatoService;
 import torneojav.servicio.InscripcionService;
 import torneojav.servicio.JugadorService;
 import torneojav.servicio.ResultadoService;
+import torneojav.servicio.TorneoService;
 
 public class App {
 
@@ -40,6 +43,8 @@ public class App {
     private static InscripcionService inscripcionService;
     private static ResultadoService resultadoService;
     private static CalendarioService calendarioService;
+    private static TorneoService torneoService;
+    private static FormatoService formatoService;
 
     public static void main(String[] args) {
         try {
@@ -61,14 +66,17 @@ public class App {
         inscripcionService = new InscripcionService(equipos, auth);
         resultadoService = new ResultadoService(partidos, new EventoRepositorioPostgres(), jugadores, torneos, auth);
         calendarioService = new CalendarioService(torneos, equipos, partidos, auth);
+        torneoService = new TorneoService(torneos, equipos, partidos, auth);
+        formatoService = new FormatoService(torneos, partidos, auth);
 
-        // Por ahora se trabaja con el torneo 1 (lo crea db/schema.sql).
-        // Cuando esté el menú de HU-02 el administrador podrá elegir el torneo.
-        torneo = torneos.buscarPorId(1).orElse(null);
-        if (torneo == null) {
-            System.out.println("No existe el torneo con id 1. Ejecute db/schema.sql para cargar los datos de prueba.");
+        // Se arranca con el primer torneo registrado. El administrador puede cambiarlo
+        // con la opción "Seleccionar torneo de trabajo".
+        List<Torneo> existentes = torneos.listarTodos();
+        if (existentes.isEmpty()) {
+            System.out.println("No hay torneos registrados. Ejecute db/schema.sql para cargar los datos de prueba.");
             return;
         }
+        torneo = existentes.get(0);
 
         System.out.println("=== TorneoJAV | " + torneo.getNombre() + " ===");
         while (true) {
@@ -112,14 +120,24 @@ public class App {
 
     private static void menuAdministrador() {
         while (true) {
-            System.out.println("\n--- Menú Administrador ---");
+            System.out.println("\n--- Menú Administrador | Torneo de trabajo: " + torneo.getNombre()
+                    + " (id " + torneo.getId() + ") ---");
+            System.out.println("Inscripciones");
             System.out.println("1. Ver equipos pendientes de aprobación");
             System.out.println("2. Aprobar inscripción");
             System.out.println("3. Rechazar inscripción");
             System.out.println("4. Ver equipos aprobados");
+            System.out.println("Calendario");
             System.out.println("5. Generar calendario (" + (torneo.tieneFormato() ? torneo.getFormato() : "sin formato") + ")");
             System.out.println("6. Ver calendario");
             System.out.println("7. Generar siguiente ronda (solo eliminación directa)");
+            System.out.println("Torneos");
+            System.out.println("8. Crear torneo");
+            System.out.println("9. Ver torneos");
+            System.out.println("10. Modificar nombre y fecha de un torneo");
+            System.out.println("11. Cambiar formato de un torneo");
+            System.out.println("12. Eliminar torneo");
+            System.out.println("13. Seleccionar torneo de trabajo");
             System.out.println("0. Cerrar sesión");
             int opcion = leerEntero("Opción: ");
             if (opcion == 0) {
@@ -152,12 +170,50 @@ public class App {
                         System.out.println("Ronda " + ronda.get(0).getRonda() + " generada:");
                         imprimirCalendario(ronda);
                         break;
+                    case 8:
+                        Torneo creado = torneoService.crear(leerTexto("Nombre: "),
+                                leerFecha("Fecha de inicio (AAAA-MM-DD): "), elegirFormato());
+                        System.out.println("Creado: " + creado);
+                        break;
+                    case 9:
+                        imprimir(torneoService.listar());
+                        break;
+                    case 10:
+                        int idModificar = leerEntero("Id del torneo: ");
+                        Torneo modificado = torneoService.actualizar(idModificar, leerTexto("Nuevo nombre: "),
+                                leerFecha("Nueva fecha de inicio (AAAA-MM-DD): "));
+                        System.out.println("Actualizado: " + modificado);
+                        break;
+                    case 11:
+                        int idFormato = leerEntero("Id del torneo: ");
+                        System.out.println("Actualizado: " + formatoService.asignarFormato(idFormato, elegirFormato()));
+                        break;
+                    case 12:
+                        int idEliminar = leerEntero("Id del torneo: ");
+                        if (idEliminar == torneo.getId()) {
+                            System.out.println("Ese es el torneo de trabajo. Seleccione otro (opción 13) antes de eliminarlo.");
+                            break;
+                        }
+                        // CA-06: confirmación antes de eliminar
+                        if (leerTexto("¿Seguro que desea eliminar el torneo " + idEliminar + "? (s/n): ")
+                                .equalsIgnoreCase("s")) {
+                            torneoService.eliminar(idEliminar);
+                            System.out.println("Torneo eliminado");
+                        }
+                        break;
+                    case 13:
+                        int idTrabajo = leerEntero("Id del torneo: ");
+                        torneo = torneoService.buscarPorId(idTrabajo).orElseThrow(
+                                () -> new IllegalArgumentException("No existe un torneo con id " + idTrabajo));
+                        System.out.println("Ahora trabaja con: " + torneo);
+                        break;
                     default:
                         System.out.println("Opción no válida");
                 }
             } catch (RuntimeException e) {
                 System.out.println("Error: " + e.getMessage());
             }
+            torneo = torneoService.buscarPorId(torneo.getId()).orElse(torneo);
         }
     }
 
@@ -269,6 +325,19 @@ public class App {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }
+
+    /** HU-03 CA-01: muestra los formatos disponibles para escoger uno. */
+    private static FormatoTorneo elegirFormato() {
+        FormatoTorneo[] formatos = formatoService.opcionesDisponibles();
+        for (int i = 0; i < formatos.length; i++) {
+            System.out.println((i + 1) + ". " + formatos[i]);
+        }
+        int opcion = leerEntero("Formato: ");
+        if (opcion < 1 || opcion > formatos.length) {
+            return null;
+        }
+        return formatos[opcion - 1];
     }
 
     private static TipoEvento elegirTipoEvento() {
