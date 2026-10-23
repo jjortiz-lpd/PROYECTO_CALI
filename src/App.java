@@ -7,6 +7,7 @@ import torneojav.excepcion.PersistenciaException;
 import torneojav.modelo.EstadoInscripcion;
 import torneojav.modelo.EventoPartido;
 import torneojav.modelo.Jugador;
+import torneojav.modelo.Partido;
 import torneojav.modelo.TipoEvento;
 import torneojav.modelo.Torneo;
 import torneojav.modelo.Usuario;
@@ -22,6 +23,7 @@ import torneojav.repositorio.TorneoRepositorio;
 import torneojav.repositorio.TorneoRepositorioPostgres;
 import torneojav.repositorio.UsuarioRepositorioPostgres;
 import torneojav.servicio.AutenticacionService;
+import torneojav.servicio.CalendarioService;
 import torneojav.servicio.EquipoService;
 import torneojav.servicio.InscripcionService;
 import torneojav.servicio.JugadorService;
@@ -37,6 +39,7 @@ public class App {
     private static JugadorService jugadorService;
     private static InscripcionService inscripcionService;
     private static ResultadoService resultadoService;
+    private static CalendarioService calendarioService;
 
     public static void main(String[] args) {
         try {
@@ -56,7 +59,8 @@ public class App {
         equipoService = new EquipoService(equipos, auth);
         jugadorService = new JugadorService(jugadores, equipos, auth);
         inscripcionService = new InscripcionService(equipos, auth);
-        resultadoService = new ResultadoService(partidos, new EventoRepositorioPostgres(), jugadores, auth);
+        resultadoService = new ResultadoService(partidos, new EventoRepositorioPostgres(), jugadores, torneos, auth);
+        calendarioService = new CalendarioService(torneos, equipos, partidos, auth);
 
         // Por ahora se trabaja con el torneo 1 (lo crea db/schema.sql).
         // Cuando esté el menú de HU-02 el administrador podrá elegir el torneo.
@@ -113,6 +117,9 @@ public class App {
             System.out.println("2. Aprobar inscripción");
             System.out.println("3. Rechazar inscripción");
             System.out.println("4. Ver equipos aprobados");
+            System.out.println("5. Generar calendario (" + (torneo.tieneFormato() ? torneo.getFormato() : "sin formato") + ")");
+            System.out.println("6. Ver calendario");
+            System.out.println("7. Generar siguiente ronda (solo eliminación directa)");
             System.out.println("0. Cerrar sesión");
             int opcion = leerEntero("Opción: ");
             if (opcion == 0) {
@@ -131,6 +138,19 @@ public class App {
                         break;
                     case 4:
                         imprimir(inscripcionService.equiposAprobados(torneo.getId()));
+                        break;
+                    case 5:
+                        List<Partido> generados = calendarioService.generarCalendario(torneo.getId());
+                        System.out.println("Calendario generado con " + generados.size() + " partidos:");
+                        imprimirCalendario(generados);
+                        break;
+                    case 6:
+                        imprimirCalendario(calendarioService.consultarCalendario(torneo.getId()));
+                        break;
+                    case 7:
+                        List<Partido> ronda = calendarioService.generarSiguienteRonda(torneo.getId());
+                        System.out.println("Ronda " + ronda.get(0).getRonda() + " generada:");
+                        imprimirCalendario(ronda);
                         break;
                     default:
                         System.out.println("Opción no válida");
@@ -261,6 +281,22 @@ public class App {
             return null;
         }
         return tipos[opcion - 1];
+    }
+
+    /** Muestra los partidos agrupados por ronda (o jornada). */
+    private static void imprimirCalendario(List<Partido> partidos) {
+        if (partidos.isEmpty()) {
+            System.out.println("(el calendario todavía no se ha generado)");
+            return;
+        }
+        int rondaActual = -1;
+        for (Partido p : partidos) {
+            if (p.getRonda() != rondaActual) {
+                rondaActual = p.getRonda();
+                System.out.println("-- Ronda " + rondaActual + " (" + p.getFecha() + ")");
+            }
+            System.out.println("  " + p);
+        }
     }
 
     private static void imprimir(List<?> lista) {

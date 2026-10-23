@@ -7,6 +7,7 @@ import torneojav.excepcion.ActaCerradaException;
 import torneojav.excepcion.DatosInvalidosException;
 import torneojav.modelo.EstadoPartido;
 import torneojav.modelo.EventoPartido;
+import torneojav.modelo.FormatoTorneo;
 import torneojav.modelo.Jugador;
 import torneojav.modelo.Partido;
 import torneojav.modelo.Rol;
@@ -14,19 +15,23 @@ import torneojav.modelo.TipoEvento;
 import torneojav.repositorio.EventoRepositorio;
 import torneojav.repositorio.JugadorRepositorio;
 import torneojav.repositorio.PartidoRepositorio;
+import torneojav.repositorio.TorneoRepositorio;
 
 public class ResultadoService {
 
     private final PartidoRepositorio partidos;
     private final EventoRepositorio eventos;
     private final JugadorRepositorio jugadores;
+    private final TorneoRepositorio torneos;
     private final AutenticacionService auth;
 
     public ResultadoService(PartidoRepositorio partidos, EventoRepositorio eventos,
-                            JugadorRepositorio jugadores, AutenticacionService auth) {
+                            JugadorRepositorio jugadores, TorneoRepositorio torneos,
+                            AutenticacionService auth) {
         this.partidos = partidos;
         this.eventos = eventos;
         this.jugadores = jugadores;
+        this.torneos = torneos;
         this.auth = auth;
     }
 
@@ -81,6 +86,7 @@ public class ResultadoService {
         verificarActaAbierta(partido);
 
         actualizarMarcador(partido);
+        verificarQueHayaGanadorSiEsEliminacion(partido);
         partido.setActaCerrada(true);
         partido.setEstado(EstadoPartido.FINALIZADO);
         return partidos.guardar(partido);
@@ -106,6 +112,21 @@ public class ResultadoService {
         partido.setGolesLocal(golesLocal);
         partido.setGolesVisitante(golesVisitante);
         partidos.guardar(partido);
+    }
+
+    /*
+     * En eliminación directa el que gana pasa a la siguiente ronda (HU-07), entonces
+     * no se puede cerrar un acta empatada. El árbitro registra primero el gol que
+     * define el partido (por ejemplo, el de la tanda de penales).
+     */
+    private void verificarQueHayaGanadorSiEsEliminacion(Partido partido) {
+        boolean esEliminacion = torneos.buscarPorId(partido.getTorneoId())
+                .map(t -> t.getFormato() == FormatoTorneo.ELIMINACION_DIRECTA)
+                .orElse(false);
+        if (esEliminacion && partido.getGolesLocal() == partido.getGolesVisitante()) {
+            throw new DatosInvalidosException("En eliminación directa no puede haber empate. Registre el gol que "
+                    + "define el partido antes de cerrar el acta");
+        }
     }
 
     private void verificarActaAbierta(Partido partido) {

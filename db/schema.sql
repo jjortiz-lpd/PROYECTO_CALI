@@ -96,7 +96,9 @@ INSERT INTO torneo (nombre, fecha_inicio, formato) VALUES
 INSERT INTO equipo (nombre, capitan_id, torneo_id, estado) VALUES
     ('Tigres', 2, 1, 'APROBADO'),   -- id 1
     ('Leones', 4, 1, 'APROBADO'),   -- id 2
-    ('Pumas',  2, 1, 'PENDIENTE');  -- id 3
+    ('Pumas',  2, 1, 'PENDIENTE'),  -- id 3 (queda pendiente: no debe salir en el calendario)
+    ('Cóndores', 4, 1, 'APROBADO'), -- id 4
+    ('Halcones', 2, 1, 'APROBADO'); -- id 5
 
 INSERT INTO jugador (nombre_completo, documento, fecha_nacimiento, numero_camiseta, equipo_id) VALUES
     ('Andrés Gómez',    '10000', '2003-01-10', 1, 1),
@@ -113,7 +115,17 @@ INSERT INTO jugador (nombre_completo, documento, fecha_nacimiento, numero_camise
     ('Tomás Ortiz',     '20003', '2002-04-20', 4, 2),
     ('Miguel Ramírez',  '20004', '2002-05-20', 5, 2),
     ('Esteban Silva',   '20005', '2002-06-20', 6, 2),
-    ('Pablo Medina',    '20006', '2002-07-20', 7, 2);
+    ('Pablo Medina',    '20006', '2002-07-20', 7, 2),
+    ('Óscar Peña',      '30000', '2001-01-15', 1, 4),
+    ('Iván Cárdenas',   '30001', '2001-02-15', 2, 4),
+    ('Hugo Salazar',    '30002', '2001-03-15', 3, 4),
+    ('Raúl Molina',     '30003', '2001-04-15', 4, 4),
+    ('Álvaro Ríos',     '30004', '2001-05-15', 5, 4),
+    ('Diego Acosta',    '40000', '2004-01-25', 1, 5),
+    ('Martín Suárez',   '40001', '2004-02-25', 2, 5),
+    ('Samuel Pardo',    '40002', '2004-03-25', 3, 5),
+    ('Emilio Rangel',   '40003', '2004-04-25', 4, 5),
+    ('Gabriel Niño',    '40004', '2004-05-25', 5, 5);
 
-INSERT INTO partido (torneo_id, local_id, visitante_id, fecha, ronda) VALUES
-    (1, 1, 2, '2026-10-15', 1);  -- Tigres vs Leones
+-- Los partidos ya no se insertan a mano: los crea el administrador con
+-- "Generar calendario" (HU-07).
