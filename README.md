@@ -324,6 +324,7 @@ La documentación de TorneoJAV se encuentra organizada en diferentes documentos 
 * **Herramientas (`herramientas.md`):** Documenta el stack tecnológico y las herramientas de gestión utilizadas.
 * **Reporte Gerencial (`reporte-gerencial.md`):** Presenta el estado y avance general del proyecto.
 * **Actas (`actas.md`):** Registra las reuniones, acuerdos y seguimiento de tareas del equipo.
+* **Retrospectiva (`retrospectiva.md`):** Registra las retrospectivas de cada Sprint y los acuerdos de mejora.
 
 ---
 
