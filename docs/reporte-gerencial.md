@@ -41,7 +41,7 @@ Centralizar la gestión de torneos deportivos, usuarios y control de acceso por 
 11. **Estimación (`estimacion.md`):** Dimensionamiento del esfuerzo en 55 Story Points (SP) sincronizado con GitHub Projects.
 12. **Herramientas (`herramientas.md`):** Stack tecnológico definido (Java 17, JavaFX, JDBC/DAO, PostgreSQL 16, Git, GitHub Issues y GitHub Projects).
 13. **Reporte Gerencial (`reporte-gerencial.md`):** Estado ejecutivo del proyecto, métricas de avance por Sprint y control de entregables.
-14. **Actas de Reunión (`actas.md`):** Consolidado de las 7 actas de seguimiento, acuerdos y decisiones del equipo.
+14. **Actas de Reunión (`actas.md`):** Consolidado de las 10 actas de seguimiento, acuerdos y decisiones del equipo.
 
 ### 4.2 Modelos de Diseño Arquitectónico (`docs/diagramas/`)
 Se diseñó e integró la arquitectura del sistema a partir de las historias de usuario críticas (`HU-07`, `HU-08`, `HU-09` y `HU-05`), gestionada mediante 4 sub-issues en el repositorio vinculados a `HU-07 (#15)`:
