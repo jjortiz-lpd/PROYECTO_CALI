@@ -1,12 +1,12 @@
 ```mermaid
 flowchart TB
     %% =========================================================
-    %% PATRÓN 1: FACTORY METHOD (CREACIÓN POLIMÓRFICA)
+    %% PATRON 1: FACTORY METHOD (CREACION POLIMORFICA)
     %% =========================================================
-    subgraph PatronFactory ["🏭 1. Patrón Factory Method (Creacional)"]
+    subgraph PatronFactory ["1. Patron Factory Method (Creacional)"]
         direction TB
-        F_User["«factory»\nUsuarioFactory\n+crearSegunRol(rol: RolUsuario): Usuario"]
-        F_Cal["«factory»\nGeneradorCalendarioFactory\n+obtenerEstrategia(formato: FormatoTorneo): IGeneradorCalendario"]
+        F_User["UsuarioFactory<br/>+crearSegunRol(rol: RolUsuario): Usuario"]
+        F_Cal["GeneradorCalendarioFactory<br/>+obtenerEstrategia(formato: FormatoTorneo): IGeneradorCalendario"]
         Sub_Admin["Administrador"]
         Sub_Cap["Capitan"]
         Sub_Arb["Arbitro"]
@@ -17,58 +17,58 @@ flowchart TB
     end
 
     %% =========================================================
-    %% PATRÓN 2: STRATEGY (ALGORITMOS INTERCAMBIABLES HU-03, 07, 09)
+    %% PATRON 2: STRATEGY (ALGORITMOS INTERCAMBIABLES HU-03, 07, 09)
     %% =========================================================
-    subgraph PatronStrategy ["♟️ 2. Patrón Strategy (Comportamiento)"]
+    subgraph PatronStrategy ["2. Patron Strategy (Comportamiento)"]
         direction TB
-        Ctx_Cal["«context»\nGeneradorCalendarioService"]
-        Int_Cal["«interface»\nIGeneradorCalendario\n+generarFixture(torneo, equipos)"]
-        Str_Todos["«strategy»\nGeneradorTodosContraTodos"]
-        Str_Elim["«strategy»\nGeneradorEliminacionDirecta"]
+        Ctx_Cal["GeneradorCalendarioService"]
+        Int_Cal["«interface»<br/>IGeneradorCalendario<br/>+generarFixture(torneo, equipos)"]
+        Str_Todos["GeneradorTodosContraTodos"]
+        Str_Elim["GeneradorEliminacionDirecta"]
 
-        Ctx_Pos["«context»\nPosicionesYEstadisticasService"]
-        Int_Des["«interface»\nICriterioDesempate\n+ordenarTabla(posiciones)"]
-        Str_Pts["«strategy»\nCriterioPtsDgGf\n(1.º PTS → 2.º DG → 3.º GF)"]
+        Ctx_Pos["PosicionesYEstadisticasService"]
+        Int_Des["«interface»<br/>ICriterioDesempate<br/>+ordenarTabla(posiciones)"]
+        Str_Pts["CriterioPtsDgGf<br/>(1. PTS > 2. DG > 3. GF)"]
 
         Ctx_Cal -->|delega en| Int_Cal
-        Int_Cal <|.. Str_Todos
-        Int_Cal <|.. Str_Elim
+        Str_Todos -.->|implementa| Int_Cal
+        Str_Elim -.->|implementa| Int_Cal
 
         Ctx_Pos -->|delega en| Int_Des
-        Int_Des <|.. Str_Pts
+        Str_Pts -.->|implementa| Int_Des
     end
 
     %% =========================================================
-    %% PATRÓN 3: OBSERVER (EVENTO DE CIERRE DE ACTA HU-08 -> HU-09)
+    %% PATRON 3: OBSERVER (EVENTO DE CIERRE DE ACTA HU-08 -> HU-09)
     %% =========================================================
-    subgraph PatronObserver ["🔔 3. Patrón Observer (Comportamiento)"]
+    subgraph PatronObserver ["3. Patron Observer (Comportamiento)"]
         direction TB
-        Pub_Acta["«publisher»\nRegistroActaPartidoService\n+cerrarActaYNotificar(idActa)"]
-        Int_Obs["«interface»\nIObservadorCierreActa\n+onActaCerrada(acta, partido)"]
-        Sub_Pos["«subscriber»\nPosicionesYEstadisticasService\n+onActaCerrada(acta, partido)"]
+        Pub_Acta["RegistroActaPartidoService<br/>+cerrarActaYNotificar(idActa)"]
+        Int_Obs["«interface»<br/>IObservadorCierreActa<br/>+onActaCerrada(acta, partido)"]
+        Sub_Pos["PosicionesYEstadisticasService<br/>+onActaCerrada(acta, partido)"]
 
         Pub_Acta -->|notifica al cerrar acta| Int_Obs
-        Int_Obs <|.. Sub_Pos
+        Sub_Pos -.->|implementa| Int_Obs
     end
 
     %% =========================================================
-    %% PATRÓN 4 Y 5: DAO + SINGLETON (PERSISTENCIA HACIA BD SEPARADA)
+    %% PATRON 4 Y 5: DAO + SINGLETON (PERSISTENCIA HACIA BD SEPARADA)
     %% =========================================================
-    subgraph PatronDAOSingleton ["🔌 4 y 5. Patrones DAO + Singleton (Persistencia)"]
+    subgraph PatronDAOSingleton ["4 y 5. Patrones DAO + Singleton (Persistencia)"]
         direction TB
-        Int_DAO["«interface»\nIGenericDAO<T, ID>\n+guardar() / +actualizar() / +eliminarPorId() / +buscarPorId()"]
-        Impl_DAOs["«concrete DAOs»\nUsuarioDAOImpl | TorneoInscripcionDAOImpl\nEquipoJugadorDAOImpl | PartidoCalendarioDAOImpl\nActaEventoPartidoDAOImpl | PosicionEstadisticaDAOImpl"]
-        Sing_JDBC["«singleton»\nConexionPostgreSQLSingleton\n-instancia: ConexionPostgreSQLSingleton\n+getInstancia(): ConexionPostgreSQLSingleton\n+obtenerConexion(): Connection"]
+        Int_DAO["«interface»<br/>IGenericDAO[T, ID]<br/>+guardar() / +actualizar() / +eliminarPorId() / +buscarPorId()"]
+        Impl_DAOs["Implementaciones DAO Concretas<br/>(UsuarioDAO, TorneoDAO, EquipoDAO,<br/>PartidoDAO, ActaDAO, PosicionDAO)"]
+        Sing_JDBC["«singleton»<br/>ConexionPostgreSQLSingleton<br/>-instancia: ConexionPostgreSQLSingleton<br/>+getInstancia(): ConexionPostgreSQLSingleton<br/>+obtenerConexion(): Connection"]
 
-        Int_DAO <|.. Impl_DAOs
-        Impl_DAOs -->|obtienen Connection de| Sing_JDBC
+        Impl_DAOs -.->|implementa| Int_DAO
+        Impl_DAOs -->|obtiene Connection de| Sing_JDBC
     end
 
     %% =========================================================
     %% BASE DE DATOS SEPARADA
     %% =========================================================
-    subgraph BaseDatosExterna ["🗄️ Base de Datos Relacional Separada"]
-        PG_Ext[("PostgreSQL 16 Server\n(torneojav_db — Puerto 5432)")]
+    subgraph BaseDatosExterna ["Base de Datos Relacional Separada"]
+        PG_Ext[("PostgreSQL 16 Server<br/>torneojav_db (Puerto 5432)")]
     end
 
     F_Cal -.->|provee estrategia a| Ctx_Cal
