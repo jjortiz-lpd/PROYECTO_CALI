@@ -35,7 +35,7 @@ El sistema está organizado en capas:
 
 | Capa | Paquete | Responsabilidad |
 |---|---|---|
-| Presentación | `App.java` (consola) y JavaFX (en desarrollo) | Pedir datos al usuario y mostrar resultados |
+| Presentación | `App.java` (consola) y `torneojav.vista` (JavaFX) | Pedir datos al usuario y mostrar resultados |
 | Negocio | `torneojav.servicio` | Reglas de cada historia de usuario y control de acceso por rol |
 | Acceso a datos | `torneojav.repositorio` y `torneojav.persistencia` | Leer y guardar en PostgreSQL mediante JDBC |
 | Datos | PostgreSQL 16 | Almacenamiento persistente (`db/schema.sql`) |
@@ -48,25 +48,29 @@ Los diagramas de componentes, clases, despliegue y análisis (ECB) están en `do
 
 ```text
 PROYECTO_CALI/
-├── src/
-│   ├── App.java                      Punto de entrada: login y menús por rol (consola)
-│   └── torneojav/
-│       ├── modelo/                   Entidades: Torneo, Equipo, Jugador, Partido, EventoPartido,
-│       │                             PosicionTabla, EstadisticasTorneo, Usuario y enums
-│       ├── servicio/                 Reglas de negocio de cada HU
-│       │   ├── calendario/           IGeneradorCalendario y sus dos implementaciones (HU-07)
-│       │   └── posiciones/           ICriterioDesempate y CriterioEstandarTorneo (HU-09)
-│       ├── repositorio/              Interfaces de acceso a datos y sus implementaciones
-│       │                             ...Postgres (JDBC) y ...Memoria (pruebas sin base)
-│       ├── persistencia/             GestorConexionJDBC: lee db.properties y abre conexiones
-│       └── excepcion/                Excepciones del dominio
+├── pom.xml                           Configuración de Maven (dependencias y ejecución)
+├── src/main/
+│   ├── java/
+│   │   ├── App.java                  Punto de entrada de la versión de consola
+│   │   └── torneojav/
+│   │       ├── Contexto.java         Arma repositorios y servicios (lo usan consola y JavaFX)
+│   │       ├── vista/                Interfaz gráfica JavaFX: MainApp, VistaLogin, VistaConsultas,
+│   │       │                         VistaArbitro, VistaAdmin, VistaCapitan y Lanzador
+│   │       ├── modelo/               Entidades: Torneo, Equipo, Jugador, Partido, EventoPartido,
+│   │       │                         PosicionTabla, EstadisticasTorneo, Usuario y enums
+│   │       ├── servicio/             Reglas de negocio de cada HU
+│   │       │   ├── calendario/       IGeneradorCalendario y sus dos implementaciones (HU-07)
+│   │       │   └── posiciones/       ICriterioDesempate y CriterioEstandarTorneo (HU-09)
+│   │       ├── repositorio/          Interfaces de acceso a datos y sus implementaciones
+│   │       │                         ...Postgres (JDBC) y ...Memoria (pruebas sin base)
+│   │       ├── persistencia/         GestorConexionJDBC: lee db.properties y abre conexiones
+│   │       └── excepcion/            Excepciones del dominio
+│   └── resources/                    Recursos de la interfaz (hojas de estilo)
 ├── db/
 │   └── schema.sql                    Crea las tablas y carga los datos de prueba
-├── lib/
-│   └── postgresql-42.7.14.jar        Driver JDBC de PostgreSQL
 ├── docs/                             Documentación de ingeniería y diagramas
 ├── graficas/                         Lean Canvas
-├── .vscode/                          Configuración para compilar y ejecutar en VS Code
+├── .vscode/                          Configuración para ejecutar en VS Code
 ├── db.properties.example             Plantilla de la configuración de conexión
 └── .gitignore
 ```
@@ -209,8 +213,9 @@ Si las credenciales no son correctas o PostgreSQL está apagado, el programa lo 
 - PostgreSQL 16 o superior (incluye pgAdmin)
 - Git
 - Visual Studio Code con el Extension Pack for Java
+- Maven 3.9 o superior
 
-El driver de PostgreSQL ya viene en `lib/`, así que no hay que descargar nada más. El proyecto no usa Maven ni Gradle.
+Maven descarga automáticamente JavaFX y el driver de PostgreSQL la primera vez que se ejecuta el proyecto.
 
 Clonar el repositorio:
 
@@ -258,30 +263,18 @@ El torneo de prueba es la "Copa Javeriana" (todos contra todos). Tiene 4 equipos
 
 ## Ejecución de la Aplicación
 
-En VS Code: abrir la carpeta `PROYECTO_CALI` (la raíz, no `src`) y presionar F5, o en "Run and Debug" elegir la configuración "TorneoJAV".
-
-Por terminal, desde la raíz del proyecto:
+Primero crear `db.properties` a partir de `db.properties.example` (con la contraseña de PostgreSQL). Luego, desde la raíz del proyecto:
 
 ```bash
-# Windows
-javac -d bin -cp "lib/*" -sourcepath src src/App.java
-java -cp "bin;lib/*" App
-
-# Linux / macOS
-javac -d bin -cp "lib/*" -sourcepath src src/App.java
-java -cp "bin:lib/*" App
+mvn javafx:run          # interfaz gráfica
+mvn compile exec:java   # versión de consola
 ```
 
-La versión actual funciona por consola. Al iniciar pide usuario y contraseña y muestra el menú del rol correspondiente:
+En VS Code también se puede ejecutar con F5: la configuración "TorneoJAV GUI" abre la interfaz gráfica y "TorneoJAV" la versión de consola.
 
-| Rol | Puede hacer |
-|---|---|
-| Administrador | Crear, modificar, eliminar y configurar torneos; aprobar o rechazar inscripciones; generar el calendario y las rondas de eliminación directa |
-| Capitán | Registrar y modificar sus equipos; administrar la plantilla (entre 5 y 15 jugadores de 16 a 45 años); ver el estado de inscripción |
-| Árbitro | Registrar goles, tarjetas y cambios; cerrar el acta del partido |
-| Todos | Consultar partidos programados, resultados, tabla de posiciones y estadísticas |
+Ambas versiones usan los mismos servicios. Al iniciar piden usuario y contraseña y muestran las opciones del rol correspondiente:
 
-La interfaz gráfica en JavaFX está en desarrollo y usará los mismos servicios.
+La interfaz gráfica muestra, según el rol, las pestañas **Administración** (inscripciones, calendario y torneos), **Mis equipos** (equipos y plantilla), **Actas** (eventos y cierre de acta) y **Consultas** (partidos, resultados, tabla de posiciones y estadísticas).
 
 ---
 

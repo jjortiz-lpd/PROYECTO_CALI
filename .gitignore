@@ -4,3 +4,4 @@ db.properties
 # Archivos compilados
 bin/
 *.class
+target/
