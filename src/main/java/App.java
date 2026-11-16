@@ -39,6 +39,8 @@ import torneojav.servicio.TablaPosicionesService;
 import torneojav.servicio.TorneoService;
 import torneojav.servicio.posiciones.CriterioEstandarTorneo;
 
+import torneojav.Contexto;
+
 public class App {
 
     private static final Scanner sc = new Scanner(System.in);
@@ -64,27 +66,22 @@ public class App {
             return;
         }
 
-        EquipoRepositorio equipos = new EquipoRepositorioPostgres();
-        JugadorRepositorio jugadores = new JugadorRepositorioPostgres();
-        PartidoRepositorio partidos = new PartidoRepositorioPostgres();
-        TorneoRepositorio torneos = new TorneoRepositorioPostgres();
+        Contexto ctx = new Contexto();
+        auth = ctx.auth;
+        equipoService = ctx.equipoService;
+        jugadorService = ctx.jugadorService;
+        inscripcionService = ctx.inscripcionService;
+        resultadoService = ctx.resultadoService;
+        calendarioService = ctx.calendarioService;
+        torneoService = ctx.torneoService;
+        formatoService = ctx.formatoService;
+        tablaService = ctx.tablaService;
+        consultaService = ctx.consultaService;
 
-        auth = new AutenticacionService(new UsuarioRepositorioPostgres());
-        equipoService = new EquipoService(equipos, auth);
-        jugadorService = new JugadorService(jugadores, equipos, auth);
-        inscripcionService = new InscripcionService(equipos, auth);
-        tablaService = new TablaPosicionesService(new PosicionRepositorioPostgres(), partidos, equipos,
-                new CriterioEstandarTorneo(), auth);
-        EventoRepositorioPostgres eventos = new EventoRepositorioPostgres();
-        resultadoService = new ResultadoService(partidos, eventos, jugadores, torneos, tablaService, auth);
-        consultaService = new ConsultaService(torneos, partidos, eventos, tablaService, auth);
-        calendarioService = new CalendarioService(torneos, equipos, partidos, auth);
-        torneoService = new TorneoService(torneos, equipos, partidos, auth);
-        formatoService = new FormatoService(torneos, partidos, auth);
+        List<Torneo> existentes = ctx.torneos.listarTodos();
 
         // Se arranca con el primer torneo registrado. El administrador puede cambiarlo
         // con la opción "Seleccionar torneo de trabajo".
-        List<Torneo> existentes = torneos.listarTodos();
         if (existentes.isEmpty()) {
             System.out.println("No hay torneos registrados. Ejecute db/schema.sql para cargar los datos de prueba.");
             return;

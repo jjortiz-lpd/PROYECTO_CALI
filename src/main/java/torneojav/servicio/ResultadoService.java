@@ -75,6 +75,14 @@ public class ResultadoService {
         return evento;
     }
 
+    public List<Jugador> jugadoresDelPartido(int partidoId) {
+        auth.verificarRol(Rol.ARBITRO);
+        Partido partido = buscarPartido(partidoId);
+        List<Jugador> lista = new ArrayList<>(jugadores.buscarPorEquipo(partido.getLocal().getId()));
+        lista.addAll(jugadores.buscarPorEquipo(partido.getVisitante().getId()));
+        return lista;
+    }
+
     public Partido calcularResultado(int partidoId) {
         auth.verificarRol(Rol.ARBITRO);
         Partido partido = buscarPartido(partidoId);
