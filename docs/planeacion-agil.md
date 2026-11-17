@@ -18,4 +18,4 @@ Desarrollar progresivamente las funcionalidades de TorneoJAV, integrando cada in
 9. Consulta de calendario, resultados y estadísticas.
 
 ## Criterio de terminado
-Una historia se considera terminada cuando su funcionalidad está implementada, integrada y validada frente a sus criterios de aceptación.
+Ver [Definición de Terminado](definicion-de-terminado.md).
