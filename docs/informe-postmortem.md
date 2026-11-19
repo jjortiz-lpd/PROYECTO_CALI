@@ -82,7 +82,7 @@ Aunque al inicio del semestre el equipo presentó una demora en el arranque de l
 ---
 
 ## 7. Gestión de Calidad y Deuda Técnica
-- **Pruebas funcionales (Azure DevOps):** Se verificaron los flujos críticos de autenticación por rol (`HU-01`), validaciones de campos obligatorios (`HU-02`), reglas de plantilla de 5 a 15 jugadores y edad de 16 a 45 años (`HU-05`), verificación de formato previo al calendario (`HU-07`), inmutabilidad de actas cerradas (`HU-08`) y desempate `PTS → DG → GF` (`HU-09`), logrando resultados exitosos tras habilitar los permisos en el entorno.
+- **Pruebas funcionales (Azure DevOps):** Se verificaron los flujos críticos de autenticación por rol (`HU-01`), validaciones de campos obligatorios (`HU-02`), reglas de plantilla de 5 a 15 jugadores y edad de 16 a 45 años (`HU-05`), verificación de formato previo al calendario (`HU-07`), inmutabilidad de actas cerradas (`HU-08`) y desempate `PTS → DG → GF` (`HU-09`), logrando resultados exitosos tras habilitar los permisos en el entorno. En total se realizaron 45 pruebas.
 - **Análisis estático y deuda técnica:** Los aspectos de mantenibilidad identificados durante el desarrollo quedaron trazados en `docs/registro-de-deuda.md` y evaluados bajo el enfoque de análisis de calidad con **SonarQube** (foco en cierre seguro de recursos JDBC, manejo de excepciones y complejidad en controladores).
 - **Integración horizontal vs. vertical:** Si bien el desarrollo en capas horizontales (backend completo primero, interfaz JavaFX al final) funcionó muy bien en este proyecto por la solidez del backend, dejó concentrada toda la integración visual en el tramo final; un fallo en los contratos del backend habría puesto en riesgo la entrega.
 
