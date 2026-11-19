@@ -32,7 +32,7 @@ Verificar que TorneoJAV cumple los criterios de aceptación de las 10 Historias 
 **Fuera del alcance**
 
 - Pruebas de rendimiento, carga y usabilidad.
-- Pruebas automatizadas: al momento del reporte el repositorio **no contiene** una carpeta `src/test` ni pruebas unitarias (ver sección 9, Limitaciones).
+- Pruebas automatizadas: al momento del reporte el repositorio **no contiene** una carpeta `src/test` ni pruebas unitarias (ver sección 11, Limitaciones).
 - Reglas que la interfaz gráfica no permite intentar (por ejemplo, modificar un equipo ajeno); estas existen en la capa de servicios y quedaron pendientes de prueba unitaria.
 
 ## 4. Estrategia y Entorno de Pruebas
@@ -48,7 +48,7 @@ Verificar que TorneoJAV cumple los criterios de aceptación de las 10 Historias 
 | Datos de prueba | `admin/admin123`, `capitan/cap123`, `capitan2/cap456`, `arbitro/arb123`; torneo "Copa Javeriana" (4 equipos aprobados y Pumas pendiente) |
 | Build en Azure | No asociado (Build number: 0) |
 
-La prueba de humo previa (17/11/2026) está documentada en [`informe.md`](informe-de-prueba-de-humo.md).
+La prueba de humo previa (17/11/2026) está documentada en [`informe-de-prueba-de-humo.md`](informe-de-prueba-de-humo.md).
 
 ---
 
@@ -96,7 +96,7 @@ Todos los casos fueron asignados y ejecutados por Natalia Valencia en la configu
 | 171 | CP-HU01-Login-con-usuario-inexistente | HU-01 | Passed |
 | 172 | CP-HU01-Login-con-campos-vacios | HU-01 | Passed |
 | 173 | CP-HU01-Funcionalidades-visibles-segun-rol | HU-01 | Passed |
-| 235 | CP-HU01-Contrasenas-no-guardadas-en-texto-plano | HU-01 | Passed (ver discrepancia en sección 8) |
+| 235 | CP-HU01-Contrasenas-no-guardadas-en-texto-plano | HU-01 | Passed (ver discrepancia en sección 8.5) |
 | 174 | CP-HU02-Crear-torneo-con-datos-validos | HU-02 | Passed |
 | 175 | CP-HU02-Crear-torneo-sin-nombre | HU-02 | Passed |
 | 176 | CP-HU02-Modificar-torneo | HU-02 | Passed |
@@ -195,17 +195,77 @@ La severidad es una propuesta del equipo de QA y puede ajustarse en la retrospec
 
 ## 8. Evidencias
 
-Las capturas de pantalla y la información del sistema fueron exportadas desde Azure Test Plans y se encuentran en `docs/qa/evidencias/`:
+Las capturas de pantalla y la información del sistema fueron exportadas desde Azure Test Plans y se encuentran en `docs/qa/evidencias/`. La guía completa de la carpeta está en [`evidencias/README.md`](evidencias/README.md). En esta sección se muestran las capturas más representativas; el resto está en las carpetas indicadas.
+
+### 8.1 Organización de las evidencias
 
 | Carpeta | Contenido | Casos cubiertos |
 |---|---|---|
+| `evidencias_prueba_de_humo/` | 12 capturas `PH-XX` de la prueba de humo (17/11/2026) | Pasos 0 a 10 de la prueba de humo |
 | `evidencias_run_1000025/` | 66 capturas de pantalla por paso | Casos 170–213 |
 | `evidencias_run_1000027/` | 32 capturas y 15 archivos `SystemInformation` (`.json`) | Casos 223–235 (casos adicionales orientados a defectos) |
 
-Convención de nombre: `<ID caso>_<nombre del caso>_Paso_Screenshot_<fecha-hora>.png`. Las capturas de la prueba de humo (17/11/2026) están en `docs/qa/evidencias/evidencias-prueba-de-humo/` (`PH-xx`).
+Convención de nombre en los runs de Azure: `<ID caso>_<nombre del caso>_Paso_Screenshot_<fecha-hora>.png`. Las capturas de la prueba de humo siguen la convención `PH-XX-descripcion.png`.
 
+### 8.2 Evidencias de la prueba de humo (17/11/2026)
 
-### Discrepancias detectadas durante la elaboración del reporte
+La prueba de humo cerró con 8 pasos aprobados, 0 fallidos y 2 no ejecutables por la interfaz gráfica. Detalle completo en [`informe-de-prueba-de-humo.md`](informe-de-prueba-de-humo.md).
+
+**Calendario generado (6 partidos en 3 rondas, sin Pumas)**
+
+![Prueba de humo - calendario generado](evidencias/evidencias_prueba_de_humo/PH-02-calendario-generado.png)
+
+**Cierre de acta: marcador final 2 - 0 y tabla actualizada**
+
+![Prueba de humo - acta cerrada](evidencias/evidencias_prueba_de_humo/PH-07-acta-cerrada-2-0.png)
+
+**Tabla de posiciones: Tigres primero con 3 puntos**
+
+![Prueba de humo - tabla de posiciones](evidencias/evidencias_prueba_de_humo/PH-09-tabla-posiciones.png)
+
+### 8.3 Evidencias de un caso aprobado
+
+**Caso 209 — CP-HU09-Tabla-actualizada-al-cerrar-acta (Passed).** Tras cerrar el acta, Tigres lidera con 3 puntos y DG +2, y Halcones queda con 0 puntos y DG -2.
+
+![Caso 209 - tabla actualizada al cerrar acta](evidencias/evidencias_run_1000025/209_CP-HU09-Tabla-actualizada-al-cerrar-acta_Paso_Screenshot_2026-11-19T04-12-05-632Z.png)
+
+### 8.4 Evidencias de los defectos encontrados
+
+Se muestran las capturas de los defectos con mayor impacto o más fáciles de reconocer en pantalla. Las capturas de los casos 225, 230 y 231 (defectos #249, #255 y #256) están en `evidencias_run_1000027/`.
+
+**#250 (Crítica) — Caso 224: el ganador de la ronda 1 queda fuera de la ronda 2.** En "Torneo Bug KO" (eliminación directa), T-B ganó la ronda 1 (1 - 0), pero la ronda 2 se programó entre T-A, un equipo aprobado después del calendario, y T-D.
+
+![Caso 224 - ronda 2 sin el ganador de la ronda 1](evidencias/evidencias_run_1000027/224_CP-HU07-Eliminacion-directa-equipo-aprobado-despues-del-calendario_Paso_Screenshot_2026-11-19T06-04-51-387Z.png)
+
+**#247 (Alta) — Caso 223: se aprueba un equipo sin jugadores.** El equipo de prueba "Sin Jugadores FC" (Torneo QA) aparece con estado APROBADO.
+
+![Caso 223 - equipo sin jugadores aprobado](evidencias/evidencias_run_1000027/223_CP-HU06-Aprobar-equipo-sin-jugadores_Paso_Screenshot_2026-11-19T05-11-39-360Z.png)
+
+**#251 (Alta) — Caso 227: no hay forma de corregir un evento.** En el acta Leones vs Cóndores (1 - 0) el gol del minuto 20 quedó registrado; la pantalla solo ofrece "Registrar evento" y "Cerrar acta", sin opción de editar o eliminar eventos.
+
+![Caso 227 - acta sin opción de corregir eventos](evidencias/evidencias_run_1000027/227_CP-HU08-Corregir-evento-registrado-por-error_Paso_Screenshot_2026-11-19T06-30-20-432Z.png)
+
+**#252 (Media) — Caso 228: un jugador expulsado sigue marcando.** Daniel Castro (Leones) recibe tarjeta roja en el minuto 10 y aun así se le registra un gol en el minuto 80 (marcador 2 - 0).
+
+![Caso 228 - jugador expulsado marca un gol](evidencias/evidencias_run_1000027/228_CP-HU08-Jugador-expulsado-no-puede-seguir-en-el-partido_Paso_Screenshot_2026-11-19T06-33-46-571Z.png)
+
+**#257 (Media) — Caso 234: dos torneos con el mismo nombre.** El listado de torneos muestra dos "Copa Javeriana" (ids 1 y 6).
+
+![Caso 234 - torneos con nombre repetido](evidencias/evidencias_run_1000027/234_CP-HU02-Crear-torneo-con-nombre-repetido_Paso_Screenshot_2026-11-19T06-52-07-940Z.png)
+
+**#248 (Media) — Caso 233: nombre de equipo casi duplicado.** Junto a "Zorros FC" quedó registrado "Zorros  FC" (con doble espacio) con estado PENDIENTE.
+
+![Caso 233 - nombre casi duplicado aceptado](evidencias/evidencias_run_1000027/233_CP-HU04-Nombre-de-equipo-casi-duplicado_Paso_Screenshot_2026-11-19T05-43-56-251Z.png)
+
+**#253 (Media) — Caso 232: error técnico de PostgreSQL visible al usuario.** Al eliminar un jugador con eventos registrados, el mensaje muestra texto de la base de datos (llave foránea `evento_partido_jugador_id_fkey`).
+
+![Caso 232 - error técnico de base de datos](evidencias/evidencias_run_1000027/232_CP-HU05-Errores-tecnicos-de-base-de-datos-en-mensajes_Paso_Screenshot_2026-11-19T06-38-20-930Z.png)
+
+**#254 (Baja) — Caso 229: edad negativa en el mensaje.** Con una fecha de nacimiento futura, el mensaje indica "La edad del jugador (-5) debe estar entre 16 y 45 años".
+
+![Caso 229 - edad negativa en el mensaje](evidencias/evidencias_run_1000027/229_CP-HU05-Fecha-de-nacimiento-futura_Paso_Screenshot_2026-11-19T06-43-20-668Z.png)
+
+### 8.5 Discrepancias detectadas durante la elaboración del reporte
 
 | # | Hallazgo | Acción recomendada |
 |---|---|---|
@@ -214,7 +274,58 @@ Convención de nombre: `<ID caso>_<nombre del caso>_Paso_Screenshot_<fecha-hora>
 
 ---
 
-## 9. Limitaciones
+## 9. Matriz de Trazabilidad
+
+Relación entre cada Historia de Usuario, sus casos de prueba y los defectos asociados.
+
+| HU | Casos aprobados | Casos fallidos | Bugs | Estado |
+|---|---|---|---|---|
+| HU-01 | 169, 170, 171, 172, 173, 235 | — | — | Cumple (sujeto a la discrepancia del caso 235) |
+| HU-02 | 174, 175, 176, 177, 178 | 234 | #257 | Abierta |
+| HU-03 | 179, 180, 181 | — | — | Cumple |
+| HU-04 | 182, 183, 184, 185, 186 | 233 | #248 | Abierta |
+| HU-05 | 187, 188, 189, 190, 191, 192, 193, 194, 195 | 229, 230, 231, 232 | #253, #254, #255, #256 | Abierta |
+| HU-06 | 196, 197, 198, 199 | 223, 225 | #247, #249 | Abierta |
+| HU-07 | 200, 201, 202, 203 | 224 | #250 (y #249) | Abierta |
+| HU-08 | 204, 205, 206, 207 | 227, 228 | #251, #252 | Abierta |
+| HU-09 | 208, 209, 210, 226 | — | — | Cumple |
+| HU-10 | 211, 212, 213 | — | — | Cumple |
+
+---
+
+## 10. Riesgos y Plan de Regresión
+
+### 10.1 Riesgos identificados
+
+| Riesgo | Origen | Impacto |
+|---|---|---|
+| Torneos en estado inconsistente (equipos aprobados sin partidos, ganadores que no avanzan) | Defectos #249 y #250 | Un torneo en eliminación directa puede quedar mal armado y no se corrige desde la interfaz |
+| Datos duplicados o inválidos (torneos, equipos, camisetas, documentos) | Defectos #248, #255, #256 y #257 | Información poco confiable en tablas, calendarios y estadísticas |
+| Errores en actas sin posibilidad de corrección | Defectos #251 y #252 | Resultados y tabla de posiciones incorrectos una vez cerrada el acta |
+| Contraseñas almacenadas en texto plano | Discrepancia 1 (DT-01) | Riesgo de seguridad; el caso 235 quedó en Passed pese a esto |
+| Reglas de servicios sin verificar | Ausencia de `src/test` (casos 186, 195 y 206) | Regresiones que no se detectarían de forma automática |
+
+### 10.2 Plan de regresión
+
+Casos que se deben re-ejecutar tras corregir cada defecto, en el orden de prioridad sugerido:
+
+| Orden | Bug | Caso(s) a re-ejecutar | Casos relacionados a revisar |
+|---|---|---|---|
+| 1 | #250 | 224 | 203 |
+| 2 | #249 | 224, 225 | 196, 199, 200 |
+| 3 | #247 | 223 | 196 |
+| 4 | #256 | 231 | 190 |
+| 5 | #251 | 227 | 204, 205 |
+| 6 | #252 | 228 | 204 |
+| 7 | #255 | 230 | 187, 193 |
+| 8 | #257 | 234 | 174, 176 |
+| 9 | #248 | 233 | 182, 184 |
+| 10 | #253 | 232 | 194 |
+| 11 | #254 | 229 | 188, 189 |
+
+---
+
+## 11. Limitaciones
 
 - Las pruebas fueron **manuales**; no existe suite automatizada ni ejecución de `mvn test` (ver `DT-02` en el registro de deuda técnica).
 - Todas las ejecuciones fueron realizadas por una sola persona (QA Lead) en un solo entorno (Windows 10).
@@ -223,14 +334,14 @@ Convención de nombre: `<ID caso>_<nombre del caso>_Paso_Screenshot_<fecha-hora>
 
 ---
 
-## 10. Conclusiones y Recomendaciones
+## 12. Conclusiones y Recomendaciones
 
 1. Se ejecutaron los **58 casos de prueba (100 %)**: **47 aprobados (81,0 %)** y **11 fallidos**, todos con Bug asociado en Azure DevOps.
 2. Las funcionalidades de **autenticación, formato del torneo, tabla de posiciones y consultas (HU-01, HU-03, HU-09, HU-10)** no presentaron fallos funcionales en los casos ejecutados.
 3. Los defectos se concentran en **validaciones de integridad y flujos de borde** de HU-02, HU-04, HU-05, HU-06, HU-07 y HU-08. Ninguno impide el flujo principal feliz (crear torneo → inscribir → calendario → actas → posiciones), pero **#250, #249 y #247** afectan la consistencia del torneo y deberían corregirse primero.
 4. **Prioridad de corrección sugerida:** #250 → #249 → #247 → #256 → #251 → #252 → #255 → #257 → #248 → #253 → #254.
-5. Tras corregir cada defecto se debe **re-ejecutar el caso asociado** (regresión) y cerrar el Bug en Azure DevOps.
-6. Resolver las discrepancias de la sección 8 (caso 235 y pruebas unitarias) antes de declarar la suite como cerrada.
+5. Tras corregir cada defecto se debe **re-ejecutar el caso asociado** (regresión) y cerrar el Bug en Azure DevOps (ver plan de regresión en la sección 10.2).
+6. Resolver las discrepancias de la sección 8.5 (caso 235 y pruebas unitarias) antes de declarar la suite como cerrada.
 
 ### Criterio de salida (Definition of Done)
 
