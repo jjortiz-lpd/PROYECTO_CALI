@@ -20,7 +20,7 @@ Verificar de forma rápida que las funcionalidades principales de TorneoJAV (aut
 ## 3. Estado inicial
 Tras reiniciar la base de datos, el torneo "Copa Javeriana" (formato Todos contra todos, inicio 2026-10-15) tiene cuatro equipos aprobados (Tigres, Leones, Cóndores, Halcones) y uno pendiente de aprobación (Pumas).
 
-![PH-00](evidencias/PH-00-estado-inicial.png)
+![PH-00](evidencias/evidencias_prueba_de_humo/PH-00-estado-inicial.png)
 
 ## 4. Resultados
 
@@ -39,41 +39,43 @@ Tras reiniciar la base de datos, el torneo "Copa Javeriana" (formato Todos contr
 
 ## 5. Evidencias
 
+Las capturas están en `docs/qa/evidencias/evidencias_prueba_de_humo/` y siguen la convención `PH-XX-descripcion.png`, donde XX es el número del paso.
+
 ### Paso 1 — Login con contraseña errada
-![PH-01](evidencias/PH-01-login-clave-erronea.png)
+![PH-01](evidencias/evidencias_prueba_de_humo/PH-01-login-clave-erronea.png)
 
 ### Paso 2 — Calendario generado
-![PH-02 mensaje](evidencias/PH-02-mensaje-calendario.png)
+![PH-02 mensaje](evidencias/evidencias_prueba_de_humo/PH-02-mensaje-calendario.png)
 
-![PH-02 calendario](evidencias/PH-02-calendario-generado.png)
+![PH-02 calendario](evidencias/evidencias_prueba_de_humo/PH-02-calendario-generado.png)
 
 ### Paso 3 — Calendario repetido
-![PH-03](evidencias/PH-03-calendario-repetido-error.png)
+![PH-03](evidencias/evidencias_prueba_de_humo/PH-03-calendario-repetido-error.png)
 
 ### Paso 4 — Cambio de formato con calendario generado
-![PH-04](evidencias/PH-04-cambio-formato-error.png)
+![PH-04](evidencias/evidencias_prueba_de_humo/PH-04-cambio-formato-error.png)
 
 ### Paso 5 — Jugador fuera del rango de edad
-![PH-05](evidencias/PH-05-jugador-edad-error.png)
+![PH-05](evidencias/evidencias_prueba_de_humo/PH-05-jugador-edad-error.png.png)
 
 ### Paso 6 — Jugadores de un equipo ajeno
 No ejecutable desde la interfaz gráfica. Se cubrirá con una prueba unitaria sobre `JugadorService`.
 
 ### Paso 7 — Cierre de acta
-![PH-07 confirmación](evidencias/PH-07-confirmar-cierre-acta.png)
+![PH-07 confirmación](evidencias/evidencias_prueba_de_humo/PH-07-confirmar-cierre-acta.png)
 
-![PH-07 marcador final](evidencias/PH-07-marcador-final.png)
+![PH-07 marcador final](evidencias/evidencias_prueba_de_humo/PH-07-acta-cerrada-2-0.png)
 
-![PH-07 resultados](evidencias/PH-07-resultados.png)
+![PH-07 resultados](evidencias/evidencias_prueba_de_humo/PH-07-resultados.png)
 
 ### Paso 8 — Evento sobre un acta cerrada
 No ejecutable desde la interfaz gráfica, porque el partido ya cerrado deja de aparecer en la lista de actas. Se cubrirá con una prueba unitaria sobre `ResultadoService`.
 
 ### Paso 9 — Tabla de posiciones
-![PH-09](evidencias/PH-09-tabla-posiciones.png)
+![PH-09](evidencias/evidencias_prueba_de_humo/PH-09-tabla-posiciones.png)
 
 ### Paso 10 — Estadísticas
-![PH-10](evidencias/PH-10-estadisticas.png)
+![PH-10](evidencias/evidencias_prueba_de_humo/PH-10-estadisticas.png)
 
 ## 6. Resumen
 
