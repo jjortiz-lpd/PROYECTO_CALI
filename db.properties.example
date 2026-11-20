@@ -1,5 +1,9 @@
-# Copien este archivo como "db.properties" (en la misma carpeta) y pongan
-# su propia contraseña de PostgreSQL. db.properties NO se sube a GitHub.
-db.url=jdbc:postgresql://localhost:5432/torneojav
-db.usuario=postgres
+# --- Opción A: base en la nube (Neon). Pedir las credenciales al equipo. ---
+db.url=jdbc:postgresql://HOST_DE_NEON/neondb?sslmode=require
+db.usuario=USUARIO_DE_NEON
 db.contrasena=CAMBIAR_POR_SU_CLAVE
+
+# --- Opción B: PostgreSQL local. Comenten las tres líneas de arriba y descomenten estas. ---
+# db.url=jdbc:postgresql://localhost:5432/torneojav
+# db.usuario=postgres
+# db.contrasena=CAMBIAR_POR_SU_CLAVE
