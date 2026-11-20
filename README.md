@@ -38,7 +38,7 @@ El sistema está organizado en capas:
 | Presentación | `App.java` (consola) y `torneojav.vista` (JavaFX) | Pedir datos al usuario y mostrar resultados |
 | Negocio | `torneojav.servicio` | Reglas de cada historia de usuario y control de acceso por rol |
 | Acceso a datos | `torneojav.repositorio` y `torneojav.persistencia` | Leer y guardar en PostgreSQL mediante JDBC |
-| Datos | PostgreSQL 16 | Almacenamiento persistente (`db/schema.sql`) |
+| Datos | PostgreSQL (alojado en Neon, o instalación local) | Almacenamiento persistente (`db/schema.sql`) |
 
 Los diagramas de componentes, clases, despliegue y análisis (ECB) están en `docs/diagramas/`.
 
@@ -71,7 +71,7 @@ PROYECTO_CALI/
 ├── docs/                             Documentación de ingeniería y diagramas
 ├── graficas/                         Lean Canvas
 ├── .vscode/                          Configuración para ejecutar en VS Code
-├── db.properties.example             Plantilla de la configuración de conexión
+├── db.properties.example             Plantilla de la conexión (base en Neon o local)
 └── .gitignore
 ```
 
@@ -81,7 +81,7 @@ Cada servicio depende de las interfaces del paquete `repositorio` y no de una im
 
 ## Base de Datos
 
-TorneoJAV usa PostgreSQL 16. El esquema completo está en `db/schema.sql` y tiene 7 tablas:
+TorneoJAV usa PostgreSQL. El equipo lo tiene alojado en **Neon** (PostgreSQL en la nube, plan gratuito), así que no hace falta instalar nada para conectarse; también se puede usar una instalación local. El esquema completo está en `db/schema.sql` y tiene 7 tablas:
 
 | Tabla | Contenido | HU |
 |---|---|---|
@@ -191,7 +191,15 @@ Además de las validaciones en Java, el esquema rechaza datos inválidos aunque 
 
 El acceso a la base de datos se hace con JDBC, usando una clase repositorio por entidad (`TorneoRepositorioPostgres`, `EquipoRepositorioPostgres`, etc.). Todas las consultas usan `PreparedStatement`, así que los datos que escribe el usuario nunca se pegan dentro del SQL y no hay riesgo de inyección SQL.
 
-`GestorConexionJDBC` lee los datos de conexión del archivo `db.properties`, que va en la raíz del proyecto:
+`GestorConexionJDBC` lee los datos de conexión del archivo `db.properties`, que va en la raíz del proyecto. Con la base en Neon se ve así:
+
+```properties
+db.url=jdbc:postgresql://<host-de-neon>/neondb?sslmode=require
+db.usuario=<usuario>
+db.contrasena=<contraseña>
+```
+
+Con una instalación local de PostgreSQL:
 
 ```properties
 db.url=jdbc:postgresql://localhost:5432/torneojav
@@ -199,9 +207,9 @@ db.usuario=postgres
 db.contrasena=SU_CLAVE
 ```
 
-Este archivo está en el `.gitignore` y no se sube a GitHub, porque cada integrante tiene su propia contraseña. En el repositorio solo está la plantilla `db.properties.example`.
+Este archivo está en el `.gitignore` y no se sube a GitHub, porque contiene credenciales. En el repositorio solo está la plantilla `db.properties.example`.
 
-Si las credenciales no son correctas o PostgreSQL está apagado, el programa lo avisa al arrancar y se cierra, en vez de fallar más adelante.
+Si las credenciales no son correctas o la base no está disponible, el programa lo avisa al arrancar y se cierra, en vez de fallar más adelante. Con Neon, la primera conexión después de un rato sin uso puede tardar unos segundos, porque la base se suspende por inactividad y se reactiva sola; si falla ese primer intento, basta con volver a ejecutar.
 
 ---
 
@@ -210,10 +218,11 @@ Si las credenciales no son correctas o PostgreSQL está apagado, el programa lo 
 ### Requisitos
 
 - Java 17 o superior
-- PostgreSQL 16 o superior (incluye pgAdmin)
+- Maven 3.9 o superior
 - Git
 - Visual Studio Code con el Extension Pack for Java
-- Maven 3.9 o superior
+- Una base PostgreSQL: la del equipo en Neon (no requiere instalar nada) o una instalación local de PostgreSQL 16 o superior (incluye pgAdmin)
+- Conexión a internet (la primera ejecución descarga dependencias y, con Neon, la aplicación se conecta a la nube)
 
 Maven descarga automáticamente JavaFX y el driver de PostgreSQL la primera vez que se ejecuta el proyecto.
 
@@ -228,6 +237,32 @@ cd PROYECTO_CALI
 
 ## Configuración de la Base de Datos
 
+Hay dos formas de conectar el proyecto a PostgreSQL. El equipo trabaja con la **Opción A (Neon)**.
+
+### Opción A: base en la nube con Neon
+
+**Para usar la base que ya tiene el equipo** (lo normal):
+
+1. Pedir las credenciales (host, usuario y contraseña) al equipo por un canal privado. No se publican en el repositorio.
+2. Copiar `db.properties.example` como `db.properties` (en la raíz del proyecto, junto a `pom.xml`) y reemplazar los valores de la sección de Neon.
+
+No hay que instalar PostgreSQL ni ejecutar `schema.sql`, porque las tablas y los datos de prueba ya están cargados.
+
+**Para crear una base nueva en Neon** (por ejemplo, si se quiere un entorno propio):
+
+1. Crear una cuenta en [neon.tech](https://neon.tech) y un proyecto nuevo, eligiendo la región más cercana.
+2. En el botón **Connect** del proyecto, copiar el usuario, la contraseña y el host.
+3. Abrir el **SQL Editor** de Neon, pegar el contenido completo de `db/schema.sql` y ejecutarlo.
+4. Armar `db.properties` con la URL en formato JDBC: sin usuario ni contraseña dentro de la URL (van en `db.usuario` y `db.contrasena`) y terminando en `?sslmode=require`. No incluir `channel_binding`, porque el driver de Java no lo necesita.
+
+Notas sobre la base en la nube:
+
+- **Es una base compartida.** Todos los que usen las mismas credenciales ven y modifican los mismos datos.
+- **Está abierta a internet** y trae usuarios de demostración, así que no deben guardarse datos reales.
+- Si alguna contraseña se llega a publicar por error, hay que restablecerla en Neon (**Reset password** sobre el rol) y actualizar el `db.properties` de todos. Borrar el archivo del repositorio no basta, porque queda en el historial de Git.
+
+### Opción B: PostgreSQL local
+
 1. Instalar PostgreSQL y anotar la contraseña del usuario `postgres` que se pide durante la instalación.
 2. Crear la base de datos. En pgAdmin: clic derecho en "Databases" > "Create" > "Database...", con el nombre `torneojav`. Por terminal:
    ```bash
@@ -237,9 +272,13 @@ cd PROYECTO_CALI
    ```bash
    psql -U postgres -d torneojav -f db/schema.sql
    ```
-4. Copiar `db.properties.example` como `db.properties` (en la misma carpeta) y poner la contraseña propia en `db.contrasena`.
+4. Copiar `db.properties.example` como `db.properties` (en la raíz del proyecto), usar los valores de la sección local y poner la contraseña propia en `db.contrasena`.
 
-`schema.sql` borra las tablas y las vuelve a crear, así que también sirve para reiniciar los datos cuando se quiera empezar de cero. Si cambia el esquema (por ejemplo, al agregar una tabla nueva), hay que volver a ejecutarlo.
+### Reiniciar los datos
+
+`schema.sql` borra las tablas y las vuelve a crear, así que sirve para reiniciar los datos cuando se quiera empezar de cero. Si cambia el esquema (por ejemplo, al agregar una tabla nueva), también hay que volver a ejecutarlo.
+
+> **Cuidado con Neon:** como la base es compartida, ejecutar `schema.sql` allí borra los datos de todo el equipo (equipos, jugadores, calendario y actas). Conviene avisar antes de hacerlo.
 
 ### Datos de prueba
 
@@ -250,7 +289,7 @@ cd PROYECTO_CALI
 | `capitan2` | `cap456` | Capitán de Leones y Cóndores |
 | `arbitro` | `arb123` | Árbitro |
 
-El torneo de prueba es la "Copa Javeriana" (todos contra todos). Tiene 4 equipos aprobados (Tigres, Leones, Cóndores y Halcones) y Pumas pendiente de aprobación. Los partidos no vienen cargados: se crean desde el menú del administrador con "Generar calendario".
+El torneo de prueba es la "Copa Javeriana" (todos contra todos). Tiene 4 equipos aprobados (Tigres, Leones, Cóndores y Halcones) y Pumas pendiente de aprobación. Los partidos no vienen cargados: se crean desde el administrador con "Generar calendario".
 
 | Equipo | Ids de sus jugadores |
 |---|---|
@@ -263,7 +302,7 @@ El torneo de prueba es la "Copa Javeriana" (todos contra todos). Tiene 4 equipos
 
 ## Ejecución de la Aplicación
 
-Primero crear `db.properties` a partir de `db.properties.example` (con la contraseña de PostgreSQL). Luego, desde la raíz del proyecto:
+Primero crear `db.properties` a partir de `db.properties.example` (ver la sección anterior). Luego, desde la raíz del proyecto:
 
 ```bash
 mvn javafx:run          # interfaz gráfica
@@ -274,13 +313,22 @@ En VS Code también se puede ejecutar con F5: la configuración "TorneoJAV GUI" 
 
 Ambas versiones usan los mismos servicios. Al iniciar piden usuario y contraseña y muestran las opciones del rol correspondiente:
 
+| Rol | Puede hacer |
+|---|---|
+| Administrador | Crear, modificar, eliminar y configurar torneos; aprobar o rechazar inscripciones; generar el calendario y las rondas de eliminación directa |
+| Capitán | Registrar y modificar sus equipos; administrar la plantilla (entre 5 y 15 jugadores de 16 a 45 años); ver el estado de inscripción |
+| Árbitro | Registrar goles, tarjetas y cambios; cerrar el acta del partido |
+| Todos | Consultar partidos programados, resultados, tabla de posiciones y estadísticas |
+
 La interfaz gráfica muestra, según el rol, las pestañas **Administración** (inscripciones, calendario y torneos), **Mis equipos** (equipos y plantilla), **Actas** (eventos y cierre de acta) y **Consultas** (partidos, resultados, tabla de posiciones y estadísticas).
+
+Si la base está en Neon y lleva un rato sin usarse, la ventana puede tardar unos segundos en aparecer mientras la base se reactiva.
 
 ---
 
 ## Ejecución de Pruebas
 
-El proyecto todavía no tiene pruebas automáticas. Mientras tanto, este recorrido verifica las funcionalidades principales con los datos de prueba:
+El proyecto todavía no tiene pruebas automáticas. Mientras tanto, este recorrido verifica las funcionalidades principales con los datos de prueba. Los pasos usan los números de opción del menú de consola; en la interfaz gráfica son las mismas acciones, en las pestañas Administración, Mis equipos y Actas:
 
 | # | Usuario | Acción | Resultado esperado |
 |---|---|---|---|
@@ -295,7 +343,7 @@ El proyecto todavía no tiene pruebas automáticas. Mientras tanto, este recorri
 | 9 | cualquiera | Consultas > Tabla de posiciones | Tigres primero con 3 puntos (HU-09) |
 | 10 | cualquiera | Consultas > Estadísticas | 1 partido jugado, 2 goles, Tigres más goleador (HU-10) |
 
-Para repetir el recorrido desde cero, volver a ejecutar `db/schema.sql`.
+Para repetir el recorrido desde cero, volver a ejecutar `db/schema.sql`. Si se está usando la base compartida de Neon, avisar antes al equipo, porque esto reinicia los datos de todos.
 
 ---
 
