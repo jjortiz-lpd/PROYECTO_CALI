@@ -6,14 +6,14 @@
 - **Institución:** Pontificia Universidad Javeriana
 - **Periodo:** 3
 - **Docente:** Kerwin de Jesús Barros Somerson
-- **Fecha de corte:** 18/11/2026
-- **Estado general:** **Completado (100% funcional, ejecutable con Maven y validado en Azure DevOps)**
+- **Fecha de corte:** 20/11/2026
+- **Estado general:** **Completado (100% funcional, ejecutable con Maven, con base de datos en la nube (Neon) y validado en Azure DevOps)**
 - **Repositorio:** https://github.com/jjortiz-lpd/PROYECTO_CALI
 
 ---
 
 ## 2. Objetivo
-Centralizar la gestión de torneos deportivos, usuarios y control de acceso por roles, inscripción de equipos, administración de plantillas de jugadores, generación automática de calendarios, registro de resultados y actas arbitrales, actualización de tablas de posiciones y consulta de estadísticas en una sola plataforma de escritorio portable.
+Centralizar la gestión de torneos deportivos, usuarios y control de acceso por roles, inscripción de equipos, administración de plantillas de jugadores, generación automática de calendarios, registro de resultados y actas arbitrales, actualización de tablas de posiciones y consulta de estadísticas en una sola plataforma de escritorio portable, con los datos centralizados en una base PostgreSQL en la nube (Neon).
 
 ---
 
@@ -41,21 +41,21 @@ Centralizar la gestión de torneos deportivos, usuarios y control de acceso por 
 9. **Requisitos Funcionales (`requisitos-funcionales.md`):** 33 requisitos funcionales (`RF-01` a `RF-33`) trazados con las Historias de Usuario.
 10. **Requisitos No Funcionales (`requisitos-no-funcionales.md`):** 6 atributos de calidad (`RNF-01` a `RNF-06`: seguridad, integridad, persistencia, usabilidad, mantenibilidad y control de acceso).
 11. **Estimación (`estimacion.md`):** Dimensionamiento del esfuerzo en 55.0 Story Points (SP) sincronizado con GitHub Projects.
-12. **Herramientas (`herramientas.md`):** Stack tecnológico consolidado (Java 17, JavaFX, **Apache Maven**, JDBC/DAO, PostgreSQL 16, Git, GitHub Projects y **Azure DevOps** para ejecución de pruebas).
+12. **Herramientas (`herramientas.md`):** Stack tecnológico consolidado (Java 17, JavaFX 21, **Apache Maven**, JDBC/DAO, PostgreSQL alojado en **Neon**, Git, GitHub Projects y **Azure DevOps** para ejecución de pruebas).
 13. **Reporte Gerencial (`reporte-gerencial.md`):** Estado ejecutivo de cierre, métricas de cumplimiento por Sprint y evidencia de calidad.
 14. **Actas de Reunión (`actas.md`):** Consolidado de las sesiones de seguimiento, acuerdos y decisiones del equipo.
-15. **Registro de Deuda Técnica (`registro-de-deuda.md`):** Bitácora de deudas técnicas identificadas y gestionadas durante la codificación.
+15. **Registro de Deuda Técnica (`registro-de-deuda.md`):** Bitácora de la deuda técnica del proyecto: 9 ítems abiertos (67 h estimadas) y 1 ya pagada (el armado de servicios pasó a la clase `Contexto`).
 16. **Retrospectiva (`retrospectiva.md`):** Análisis de lecciones aprendidas y oportunidades de mejora del proceso ágil.
 
-### 4.2 Modelos de Diseño Arquitectónico Completados (`docs/diagramas/`)
-La arquitectura del sistema fue modelada, sincronizada con el código final y cerrada en su totalidad (sub-issues `#32` al `#35` y diagramas complementarios):
+### 4.2 Modelos de Diseño Arquitectónico Completados (`docs/` y `docs/diagramas/`)
+La arquitectura del sistema fue modelada, sincronizada con el código final y cerrada en su totalidad (sub-issues `#32` al `#35` y diagramas complementarios). Los diagramas están repartidos entre `docs/` (despliegue, procesos, secuencia y patrones) y `docs/diagramas/` (ECB); los de clases y componentes existen en ambas carpetas (ver `DT-06` en el registro de deuda técnica).
 
-| Artefacto en `docs/diagramas/` | Responsable | Contenido Arquitectónico Modelado |
+| Artefacto | Responsable | Contenido Arquitectónico Modelado |
 |---|---|---|
 | `diagrama-ecb.md` | Natalia Valencia | **Diagrama de Análisis (ECB):** Separación en estereotipos `«boundary»` (vistas JavaFX), `«control»` (gestores de negocio) y `«entity»` (entidades persistentes). |
 | `diagrama-clases.md` | Juan José Ortiz | **Diagrama de Clases y SOLID:** Jerarquía de `Usuario`, entidades nucleares, patrones estrategia (`IGeneradorCalendario`, `ICriterioDesempate`), relaciones UML alineadas al código y principios SOLID. |
 | `diagrama-componentes.md` | Juan Pablo Franco | **Diagrama de Componentes:** Arquitectura en 4 capas (Presentación JavaFX, 6 módulos de Negocio en Java 17, `CapaPersistenciaDAO` y motor externo PostgreSQL) con interfaces provistas y requeridas. |
-| `diagrama-despliegue.md` | Esteban Hernández | **Diagrama de Despliegue:** Topología cliente-servidor en cajas 3D entre `Estación de Trabajo Cliente` (OpenJDK 17 + JavaFX + Maven) y `Servidor de Base de Datos` (`PostgreSQL 16`, `schema.sql`) vía `TCP/IP (JDBC)` puerto `5432`. |
+| `diagrama-despliegue.md` | Esteban Hernández | **Diagrama de Despliegue:** Topología cliente-servidor de datos en cajas 3D entre `Estación de Trabajo Cliente` (JDK 17+ con JavaFX, lanzada con Maven) y la base PostgreSQL gestionada en **Neon** (nube, AWS São Paulo), vía `TCP/IP (JDBC)` puerto `5432` con conexión cifrada (SSL). Incluye `schema.sql` y el acceso de varios computadores a los mismos datos. |
 | `diagrama-procesos.md` | Equipo de Proyecto | **Diagrama de Procesos (Swimlanes):** Flujo completo de las 10 HU distribuidas en carriles por actor, Sistema Java y Base de Datos separada. |
 | `diagrama-secuencia.md` | Equipo de Proyecto | **Diagrama de Secuencia:** Interacciones cronológicas y llamadas a métodos agrupadas en carriles desde la interfaz JavaFX hasta PostgreSQL. |
 | `diagrama-patrones.md` | Equipo de Proyecto | **Patrones de Diseño:** Estructura UML de los patrones implementados (Factory Method, Strategy, Observer, DAO y Singleton). |
@@ -86,13 +86,14 @@ El desarrollo del software culminó al **100%** antes de la fecha límite del Sp
 
 ## 7. Portabilidad, Despliegue y Aseguramiento de Calidad (QA)
 - **Construcción y portabilidad con Apache Maven:** El proyecto cuenta con gestión automatizada de dependencias y ciclo de vida en `pom.xml`, garantizando su compilación y ejecución reproducible en cualquier máquina con JDK 17+ y Maven sin configuraciones manuales de librerías externas.
+- **Base de datos en la nube (Neon):** Con posterioridad al cierre técnico, los datos se trasladaron a una base PostgreSQL gestionada en Neon. Con esto, todos los usuarios y el equipo comparten los mismos datos desde cualquier computador, y ya no se necesita instalar PostgreSQL localmente: basta Java, Maven y un archivo `db.properties` con las credenciales (que no se sube al repositorio).
 - **Integración completa de la GUI:** Las vistas de **JavaFX** se encuentran completamente desarrolladas y acopladas a los servicios de negocio y control de acceso por roles (`Administrador`, `Capitán`, `Árbitro`).
-- **Validación en Azure DevOps:** Se ejecutaron formalmente los planes y casos de prueba del proyecto en **Azure DevOps**, verificando el cumplimiento de los criterios de aceptación (`HU-01` a `HU-10`), validaciones de dominio, integridad de datos y cierre inmutable de actas.
+- **Validación en Azure DevOps:** Se ejecutaron formalmente los planes y casos de prueba del proyecto en **Azure DevOps** (pruebas de aceptación ejecutadas manualmente), verificando el cumplimiento de los criterios de aceptación (`HU-01` a `HU-10`), validaciones de dominio, integridad de datos y cierre inmutable de actas. El proyecto todavía no cuenta con pruebas automatizadas (`DT-02` del registro de deuda técnica).
 
 ---
 
 ## 8. Estado de Pendientes y Cierre Administrativo
-- **Pendientes técnicos / funcionales:** **Ninguno.** El 100% del código, la interfaz gráfica, la base de datos, los diagramas de diseño y las pruebas en Azure DevOps están completados.
+- **Pendientes técnicos / funcionales:** **Ninguno funcional.** El 100% del código, la interfaz gráfica, la base de datos, los diagramas de diseño y las pruebas en Azure DevOps están completados. La deuda técnica abierta (9 ítems, 67 h estimadas, entre ellos las contraseñas en texto plano, la ausencia de pruebas automatizadas y la base compartida sin entorno de pruebas) está registrada en `registro-de-deuda.md`.
 - **Acciones de cierre formal (Semanas 11 y 12):**
   - Verificar que todos los Issues (`#9` al `#18`) y Milestones en GitHub figuren en estado `Closed` / `Done`.
   - Preparar la demostración en vivo y sustentación final del proyecto.
